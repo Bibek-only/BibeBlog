@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  email String @unique
+  userName String @unique
+  firstName String
+  middleName String?
+  LastName String?
+  password String
+  profilePhoto String?
+  blogs Blog[] //one user can have multiple blog
+  saved SavedBlog[] //one user can have multiple blog to read in the saved section
+}
+
+model Blog{
+  id Int @id @default(autoincrement())
+  title String
+  content String
+  coverImage String?
+  isPublished Boolean @default(false)
+
+//reference to the User table for autor
+  author    User    @relation(fields: [authorId], references: [id])  
+  authorId  Int 
+
+  likes Like[] //one blog have multile likes section
+
+  // reference to the SavedBlog section
+  savedBlog SavedBlog @relation(fields: [savedBlogId],references: [id])
+  savedBlogId Int
+}
+
+model Like{
+
+  id Int @id @default(autoincrement())
+  likeCount Int @default(0)
+
+  //reference to the Blog section
+  blog Blog @relation(fields: [blogId], references: [id])
+  blogId Int
+
+}
+
+model SavedBlog{
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  blogs Blog[] //a savedBlog section have multiple blogs
+}
