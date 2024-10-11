@@ -19,7 +19,7 @@ model User{
   userName String @unique
   firstName String
   middleName String?
-  LastName String?
+  lastName String?
   password String
   profilePhoto String?
   blogs Blog[] //one user can have multiple blog
