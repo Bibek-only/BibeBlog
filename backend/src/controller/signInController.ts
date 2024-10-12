@@ -1,10 +1,19 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { signinType } from "@bibek-samal/bibeblog-common"
+import { singinSchema,signinType } from "@bibek-samal/bibeblog-common"
 import { sign } from "hono/jwt";
+import apiresponse from "../utils/apiResopnse";
 async function signin(c: any){
 
     const body:signinType = await c.req.json()
+    const validation = singinSchema.safeParse(body);
+    if(! validation.success){
+      const msg = validation.error.errors[0].message;
+      c.status(400)
+      return c.json(
+        new apiresponse(false,400,(msg)?msg:"The provided inputs are incorrect for signin")
+      )
+    }
 
     //initialize the prisma client
   const prisma = new PrismaClient({
@@ -31,21 +40,22 @@ async function signin(c: any){
           );
 
           c.status(200)
-          return c.json({
-            msg:"user signed in sucessfully",
-            data:{
-                token: jwtToken
-            }
-          })
+          return c.json(
+            new apiresponse(true,200,"User signed in sucessfully",{token:jwtToken})
+          )
     }else{
         c.status(400)
-        return c.text("provided email and password are not found")
+        return c.json(
+          new apiresponse(false,400,"Provided email and password does not match any user")
+        )
     }
 
    } catch (error) {
     console.log(error)
-    c.status(400)
-    return c.text("error in signin")
+    c.status(500)
+    return c.json(
+      new apiresponse(false,500,"Internal server error in signin end pint")
+    )
    } 
 }
 

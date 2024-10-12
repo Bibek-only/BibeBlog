@@ -1,12 +1,20 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
-import { signupType } from "@bibek-samal/bibeblog-common";
-
+import {singupSchema,signupType} from "@bibek-samal/bibeblog-common"
+import apiresponse from "../utils/apiResopnse";
 async function signup(c: any) {
   
-    const body: signupType = await c.req.json(); //extract body
-  
+    const body:signupType = await c.req.json(); //extract body
+    const validation = singupSchema.safeParse(body);
+    
+    if(! validation.success){
+      const msg = validation.error.errors[0].message;
+      c.status(400)
+      return c.json(
+        new apiresponse(false,400,(msg)?msg:"The provided inputs are incorrect for signup")
+      )
+    }
 
   //initialize the prisma client
   const prisma = new PrismaClient({
@@ -14,11 +22,26 @@ async function signup(c: any) {
   }).$extends(withAccelerate());
 
   try {
-    const user = await prisma.user.create({
-    data: body,
+
+    const findUser = await prisma.user.findUnique({
+      where:{
+        email: body.email,
+        userName: body.userName
+      }
+    })
+
+    if(findUser){
+      c.status(400)
+      return c.json(
+        new apiresponse(false,400,"Provided email/username already taken")
+      )
+    }
+
+    const user = await prisma.user.create({ //create the user
+    data: body
     });
 
-    const jwtToken = await sign(
+    const jwtToken = await sign( //create the jwt token
       {
         id: user.id,
         email: user.email,
@@ -27,16 +50,16 @@ async function signup(c: any) {
     );
 
     c.status(200);
-    return c.json({
-      msg: "user created",
-      data: {
-        token: jwtToken,
-      },
-    });
+    return c.json(
+      new apiresponse(true,200,"User created sucessfully",{token:jwtToken})
+    );
+
   } catch (error) {
     console.log(error);
-    c.status(411);
-    return c.text("cannot create the user");
+    c.status(500);
+    return c.json(
+      new apiresponse(false,500,"Internal server error in signup end point")
+    )
   }
 }
 export default signup;
