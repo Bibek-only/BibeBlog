@@ -3,6 +3,7 @@ import signup from "../controller/signupController";
 import signin from "../controller/signInController";
 import authMiddleware from "../middleware/authMiddleware";
 import getUserInformation from "../controller/getUserInformationController";
+import deleteUser from "../controller/deleteUser";
 const userRouter = new Hono<{
     Bindings:{
       DATABASE_URL:string,
@@ -11,6 +12,11 @@ const userRouter = new Hono<{
   }>();
 
 userRouter.use("/getuserinfo",async (c,next)=>{
+    
+    return await authMiddleware(c,next)
+})
+
+userRouter.use("/deleteuser",async (c,next)=>{
     
     return await authMiddleware(c,next)
 })
@@ -25,9 +31,12 @@ userRouter.get("/signin",(c)=>{
 
 
 userRouter.get("/getuserinfo",(c)=>{
-    // console.log("hii")
+    
     return getUserInformation(c)
 })
 
+userRouter.delete("/deleteuser",(c)=>{
+  return deleteUser(c)
+})
 
 export default userRouter;
