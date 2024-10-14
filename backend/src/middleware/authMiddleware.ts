@@ -2,51 +2,50 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 import apiresponse from "../utils/apiResopnse";
-async function authMiddleware(c:any,next:any){
+async function authMiddleware(c: any, next: any) {
+  const token = c.req.header("Authorization"); //extract the token from the head
 
-    const token = c.req.headers("authorization"); //get the token
-    if(!token){
-        c.status(411)
-        return c.json(
-            new apiresponse(false,411,"Ther user is not authorized")
-        )
-    }
-    const tokenvalue = await verify(token,c.env.JWT_SECERAT)
-
-    // if(!userId || !email){
-    //     c.status(411)
-    //     return c.json(
-    //         new apiresponse(false,411,"Ther user is not authorized")
-    //     )
-    // }
-
-    //initialize the prisma client
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  try {
-
-    const user = await prisma.user.findUnique({
-        where:{
-             
-        }
-    })
-    
-  } catch (error) {
-    console.log("error in authmiddleware",error)
-    c.status(400)
+  if (!token) {
+    c.status(401);
     return c.json(
-        new apiresponse(false,400,"error in auth middleware")
-    )
+      new apiresponse(
+        false,
+        401,
+        "Ther user is not authorized, auth token must need"
+      )
+    );
   }
 
+  try {
+    const tokenvalue = await verify(token, c.env.JWT_SECREAT);
 
-    
+    //initialize the prisma client
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: tokenvalue.id as number,
+        email: tokenvalue.email as string,
+      },
+    });
+    if (!user) {
+      c.status(400);
+      return c.json(new apiresponse(false, 400, "Provided token is not authorized"));
+    } else {
+      //set the userId and the email in the context
+      c.set("userId", user.id);
+      c.set("email", user.email);
+      c.status(200);
+      await next();
+
+    }
+  } catch (error) {
+    c.status(400);
+    return c.json(new apiresponse(false, 400, "not authorized"));
+  }
 }
 
-export default authMiddleware
-// get the token form backend
-// extract the userid and the email
-// verifyed the email and id exist in the database or not
-// add the userId and the Email in the context
+export default authMiddleware;
+
