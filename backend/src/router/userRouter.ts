@@ -11,7 +11,7 @@ const userRouter = new Hono<{
   }>();
 
 userRouter.use("/getuserinfo",async (c,next)=>{
-    console.log("hii magia")
+    
     return await authMiddleware(c,next)
 })
 

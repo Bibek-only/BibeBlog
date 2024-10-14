@@ -23,7 +23,8 @@ model User{
   password String
   profilePhoto String?
   blogs Blog[] //one user can have multiple blog
-  saved SavedBlog[] //one user can have multiple blog to read in the saved section
+  savedBlogs SavedBlog[] //one user have multiple saved blog
+  likes Like[] //one user can like multiple blog
 }
 
 model Blog{
@@ -33,31 +34,42 @@ model Blog{
   coverImage String?
   isPublished Boolean @default(false)
 
+  authorId  Int
 //reference to the User table for autor
-  author    User    @relation(fields: [authorId], references: [id])  
-  authorId  Int 
+  author    User    @relation(fields: [authorId], references: [id],onDelete: Cascade)  
 
-  likes Like[] //one blog have multile likes section
+  likes Like[] //one blog have multile likes
 
-  // reference to the SavedBlog section
-  savedBlog SavedBlog @relation(fields: [savedBlogId],references: [id])
-  savedBlogId Int
+  savedBy SavedBlog[] //one blog can saved by multiple user
+  
 }
 
 model Like{
 
   id Int @id @default(autoincrement())
-  likeCount Int @default(0)
+  
+  userId Int
+  blogId Int
+
+  //reference to the user section
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   //reference to the Blog section
-  blog Blog @relation(fields: [blogId], references: [id])
-  blogId Int
+  blog Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@unique([userId,blogId])
 
 }
 
 model SavedBlog{
   id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id])
   userId Int
-  blogs Blog[] //a savedBlog section have multiple blogs
+  blogId Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) //reference to the user
+
+  blog Blog @relation(fields: [blogId],references: [id], onDelete: Cascade) //referece to the blog
+
+  @@unique([userId, blogId]) //one user can save one blog
+
 }

@@ -19,7 +19,7 @@ async function getUserInformation(c: any) {
         email: true,
         firstName: true,
         middleName: true,
-        LastName: true,
+        lastName: true,
       },
     });
 
