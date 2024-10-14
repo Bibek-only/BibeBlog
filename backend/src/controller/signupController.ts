@@ -55,7 +55,7 @@ async function signup(c: any) {
     );
 
   } catch (error) {
-    console.log(error);
+    
     c.status(500);
     return c.json(
       new apiresponse(false,500,"Internal server error in signup end point")
