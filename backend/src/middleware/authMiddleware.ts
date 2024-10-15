@@ -32,7 +32,7 @@ async function authMiddleware(c: any, next: any) {
     });
     if (!user) {
       c.status(400);
-      return c.json(new apiresponse(false, 400, "Provided token is not authorized"));
+      return c.json(new apiresponse(false, 400, "Provided token is not valid"));
     } else {
       //set the userId and the email in the context
       c.set("userId", user.id);
