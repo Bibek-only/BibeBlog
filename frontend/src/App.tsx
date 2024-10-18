@@ -1,13 +1,17 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import Home from './pages/Home'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 const App = () => {
   return (
     <>
-    <Home></Home>
-    <Outlet></Outlet>
+      <div className="main min-h-screen w-full bg-black text-white">
+        <NavBar></NavBar>
+        <Outlet></Outlet>
+        <Footer></Footer>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
