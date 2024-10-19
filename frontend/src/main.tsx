@@ -18,7 +18,6 @@ const CreateBlog = lazy(() => import("./pages/CreateBlog.tsx"));
 const UpdateBlog = lazy(() => import("./pages/UpdateBlog.tsx"));
 const MyBlog = lazy(() => import("./pages/MyBlog.tsx"));
 const AllBlog = lazy(() => import("./pages/AllBlog.tsx"));
-const SavedBlog = lazy(() => import("./pages/SavedBlog.tsx"));
 const ReadBlog = lazy(() => import("./pages/ReadBlog.tsx"));
 
 const router = createBrowserRouter(
@@ -27,7 +26,7 @@ const router = createBrowserRouter(
       <Route
         path=""
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <AllBlog></AllBlog>
           </Suspense>
         }
@@ -35,7 +34,7 @@ const router = createBrowserRouter(
       <Route
         path="signup/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <Signup></Signup>
           </Suspense>
         }
@@ -43,7 +42,7 @@ const router = createBrowserRouter(
       <Route
         path="signin/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <Signin></Signin>
           </Suspense>
         }
@@ -51,7 +50,7 @@ const router = createBrowserRouter(
       <Route
         path="account/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <Account></Account>
           </Suspense>
         }
@@ -59,7 +58,7 @@ const router = createBrowserRouter(
       <Route
         path="update-acc/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <UpdateAccount></UpdateAccount>
           </Suspense>
         }
@@ -67,7 +66,7 @@ const router = createBrowserRouter(
       <Route
         path="delete-acc/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <DeleteAccount></DeleteAccount>
           </Suspense>
         }
@@ -75,7 +74,7 @@ const router = createBrowserRouter(
       <Route
         path="create-blog/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <CreateBlog></CreateBlog>
           </Suspense>
         }
@@ -83,7 +82,7 @@ const router = createBrowserRouter(
       <Route
         path="update-blog/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <UpdateBlog></UpdateBlog>
           </Suspense>
         }
@@ -91,23 +90,15 @@ const router = createBrowserRouter(
       <Route
         path="my-blog/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <MyBlog></MyBlog>
-          </Suspense>
-        }
-      ></Route>
-      <Route
-        path="saved-blog/"
-        element={
-          <Suspense fallback={"...loading"}>
-            <SavedBlog></SavedBlog>
           </Suspense>
         }
       ></Route>
       <Route
         path="read-blog/"
         element={
-          <Suspense fallback={"...loading"}>
+          <Suspense fallback={"loading..."}>
             <ReadBlog></ReadBlog>
           </Suspense>
         }
