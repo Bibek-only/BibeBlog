@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 const NavBar = () => {
   return (
     // <!-- component -->
-    <nav className="bg-black  w-100 px-8 md:px-auto">
+    <nav className="bg-black  shadow  w-100 px-8 md:px-auto sticky top-0 z-20">
       <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
         {/* <!-- Logo --> */}
         <NavLink
@@ -12,7 +12,7 @@ const NavBar = () => {
         >
           BibeBlog
         </NavLink>
-        <div className="text-gray-200 order-3 w-full md:w-auto md:order-2">
+        <div className="text-gray-500 order-3 w-full md:w-auto md:order-2">
           <ul className="flex justify-between font-bold">
             <li className="md:px-4 md:py-2 hover:text-indigo-400">
               <NavLink to="">Home</NavLink>
@@ -24,7 +24,7 @@ const NavBar = () => {
               <NavLink to="/my-blog">My blog's</NavLink>
             </li>
             <li className="md:px-4 md:py-2 hover:text-indigo-400">
-              <NavLink to="/account">About</NavLink>
+            <NavLink to="/account">About</NavLink>
             </li>
             <li className="md:px-4 md:py-2 hover:text-indigo-400">
               <button>Logout</button>
