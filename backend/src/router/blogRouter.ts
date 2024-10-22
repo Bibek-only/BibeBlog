@@ -5,6 +5,7 @@ import updateBlog from "../controller/updateBlog";
 import deleteBlog from "../controller/deleteBlog";
 import getAllBlogs from "../controller/getAllBlog";
 import getMyBlogs from "../controller/getMyBlogs";
+import getSpecificBlog from "../controller/getSpecificBlog";
 const blogRouter = new Hono<{
     Bindings:{
       DATABASE_URL:string,
@@ -36,4 +37,7 @@ blogRouter.get("/getmyblog",(c)=>{
   return getMyBlogs(c)
 })
 
+blogRouter.get("/getspeceficblog",(c)=>{
+  return getSpecificBlog(c);
+})
 export default blogRouter
