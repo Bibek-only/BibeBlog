@@ -17,14 +17,26 @@ model User{
   id Int @id @default(autoincrement())
   email String @unique
   userName String @unique
-  firstName String
-  middleName String?
-  lastName String?
+  fullName String
   password String
   profilePhoto String?
   blogs Blog[] //one user can have multiple blog
   savedBlogs SavedBlog[] //one user have multiple saved blog
   likes Like[] //one user can like multiple blog
+  comments Comment[] //one user can comment on multiple blog
+  following Follow[] @relation("UserFollowing") // One user can follow multiple users
+  followers Follow[] @relation("UserFollowers") // One user can have multiple followers
+ }
+
+model Follow {
+  id Int @id @default(autoincrement())
+  followingId Int
+  followerId Int
+
+  following User @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  follower User @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+
+  @@unique([followingId, followerId]) // Ensures a user can follow another user only once
 }
 
 model Blog{
@@ -42,7 +54,9 @@ model Blog{
 
   savedBy SavedBlog[] //one blog can saved by multiple user
   
+  comments Comment[] //one blog can get mulitple comments
 }
+
 
 model Like{
 
@@ -58,6 +72,20 @@ model Like{
   blog Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
 
   @@unique([userId,blogId])
+
+}
+
+model Comment{
+
+  id Int @id @default(autoincrement())
+  content String
+
+  userId Int 
+  blogId Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) //reference to the user section
+
+  blog Blog @relation(fields: [blogId], references: [id], onDelete: Cascade) //reference to the blog section
 
 }
 
