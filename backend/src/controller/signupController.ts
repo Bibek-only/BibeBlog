@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
-import {singupSchema,signupType} from "@bibek-samal/bibeblog-common"
+import { signupType, singupSchema } from "@bibek-samal/bibeblog-common";
 import apiresponse from "../utils/apiResopnse";
 async function signup(c: any) {
   
     const body:signupType = await c.req.json(); //extract body
+    
     const validation = singupSchema.safeParse(body);
     
     if(! validation.success){
