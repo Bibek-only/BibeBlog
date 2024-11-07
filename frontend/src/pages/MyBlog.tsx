@@ -1,4 +1,5 @@
-
+import { FaEdit, } from 'react-icons/fa';
+import { MdDelete, } from 'react-icons/md';
 
 const MyBlog = () => {
   return (
@@ -16,10 +17,17 @@ const MyBlog = () => {
         <p className="text-gray-100 text-xl font-semibold max-lg:text-lg">Published on: <span className="text-lg max-lg:text-sm text-gray-300">13 jun 2022</span></p>
         <p className="text-gray-100 text-xl font-semibold max-lg:text-lg">Author: <span className="text-lg text-gray-300 max-lg:text-sm">Bibke samal</span></p>
         <h1 className="text-gray-100 text-xl font-semibold max-lg:text-lg">How to become a good dev</h1>
-        <div className="btns flex gap-3">
-        <button className="px-6 py-2 rounded-xl text-xl max-lg:text-lg bg-indigo-500 font-semi-bold text-gray-100 hover:bg-indigo-600 hover:text-white">Read</button>
-        <button className="px-6 py-2 rounded-2xl text-xl max-lg:text-lg bg-indigo-500 font-semi-bold text-gray-100 hover:bg-indigo-600 hover:text-white">Published</button>
+        <div className="btns flex gap-3 items-center max-lg:flex-col max-lg:items-start">
+          <div className='flex gap-2'>
+        <button className="px-6 py-2 rounded-2xl text-xl max-lg:text-sm max-lg:py-1 max-lg:px-4 bg-indigo-500 font-semi-bold text-gray-100 hover:bg-indigo-600 hover:text-white">Read</button>
+        <button className="px-6 py-2 rounded-2xl text-xl max-lg:text-sm max-lg:py-1 max-lg:px-2 bg-indigo-500 font-semi-bold text-gray-100 hover:bg-indigo-600 hover:text-white">Published</button>
         </div>
+        <div className="icons text-indigo-500  text-3xl flex gap-3">
+        <span className='hover:text-indigo-600'><FaEdit /></span>
+        <span className='hover:text-indigo-600'><MdDelete /></span>
+        </div>
+        </div>
+        
         </div>
       </div>
       
