@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form"
+
 import { IoPerson } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { IoEyeSharp } from "react-icons/io5";
@@ -7,8 +9,20 @@ import { FaGoogle } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
 import {signupService} from "../services/signupService";
+import { signupType } from "@bibek-samal/bibeblog-common";
 
 const Signup = () => {
+  //handel the form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<signupType>()
+
+  //
+  const onSubmit: SubmitHandler<signupType> = async (data) => signupService(data);
+
+
     const [showPass,setShowPass] = useState(false);
      signupService({
       email: "bibek@gmai.com",
@@ -34,7 +48,7 @@ const Signup = () => {
       <div className="form    h-full relative text-white flex ">
         
 
-      <div className="form  lg:w-11/12 m-auto w-full px-2 mt-4 md:mt-0  flex flex-col gap-4 ">
+      <form className="form  lg:w-11/12 m-auto w-full px-2 mt-4 md:mt-0  flex flex-col gap-4 " onSubmit={handleSubmit(onSubmit)} >
         <div className="heading mb-4">
           <h1 className="lg:text-4xl font-bold text-xl mb-2">Signup to BibeBlog</h1>
           <p className="text-lg font-thin text-gray-300">Already have account <span className="text-indigo-500 hover:text-indigo-600 cursor-pointer  hover:underline ">signin</span></p>
@@ -45,9 +59,9 @@ const Signup = () => {
             <div className="ip py-4 text-gray-300 flex items-center border border-transparent focus-within:border-white focus-within:bg-inherit bg-[#16181c] transition-all duration-300">
               <div className="logo lg:text-2xl text-xl font-bold px-2 "><MdDriveFileRenameOutline />
               </div>
-              <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent " placeholder="Enter full name"/>
+              <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent " placeholder="Enter full name" {...register("fullName",{required:true})}/>
             </div>
-            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 invisible">this is error message</div>
+            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 ">{errors.fullName && "Name is required"}</div>
           </div>
         </div>
         <div className="email flex flex-col gap-2">
@@ -56,9 +70,9 @@ const Signup = () => {
             <div className="ip py-4 text-gray-300 flex items-center border border-transparent focus-within:border-white focus-within:bg-inherit bg-[#16181c] transition-all duration-300">
               <div className="logo lg:text-2xl text-xl font-bold px-2 "><MdEmail />
               </div>
-              <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter email address"/>
+              <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter email address" {...register("email",{required:true})}/>
             </div>
-            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 invisible">this is error message</div>
+            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 ">{errors.email && "Email must requered"}</div>
           </div>
         </div>
         <div className="userName flex flex-col gap-2">
@@ -67,9 +81,9 @@ const Signup = () => {
             <div className="ip py-4 text-gray-300 flex items-center border border-transparent focus-within:border-white focus-within:bg-inherit bg-[#16181c] transition-all duration-300">
               <div className="logo lg:text-2xl text-xl font-bold px-2 "><IoPerson />
               </div>
-              <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter email address"/>
+              <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter email address" {...register("userName",{required:true})}/>
             </div>
-            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 invisible">this is error message</div>
+            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 ">{errors.userName && "userName must required"}</div>
           </div>
         </div>
         <div className="password flex flex-col gap-2">
@@ -78,14 +92,14 @@ const Signup = () => {
             <div className="ip py-4 text-gray-300 flex items-center border border-transparent focus-within:border-white focus-within:bg-inherit bg-[#16181c] transition-all duration-300">
               <button className="logo lg:text-2xl text-xl font-bold px-2 cursor-pointer text-indigo-500 hover:text-indigo-600 duration-300" onClick={()=>{setShowPass(!showPass)}}>{(showPass)? <IoEyeSharp />: <IoEyeOffSharp/>}
               </button>
-              <input type={(showPass)?"text":"password"} className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter password" />
+              <input type={(showPass)?"text":"password"} className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter password" {...register("password",{required:{value:true,message:"password must required"}, minLength:{value:8,message:"password is too sort"}})}/>
             </div>
-            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 invisible">this is error message</div>
+            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 ">{errors.password && errors.password?.message}</div>
           </div>
         </div>
 
         {/* button for signup */}
-        <button className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300">Sign up</button>
+        <button className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300" type="submit">Sign up</button>
         <button className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300 relative ">
         <div className="gle-lgo h-full top-0 left-4 absolute flex items-center ">
         <FaGoogle />
@@ -93,7 +107,7 @@ const Signup = () => {
         
         signup using google
         </button>
-      </div>
+      </form>
 
       
 
