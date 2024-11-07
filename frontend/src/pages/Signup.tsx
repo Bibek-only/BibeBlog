@@ -4,11 +4,21 @@ import { MdEmail } from "react-icons/md";
 import { IoEyeSharp } from "react-icons/io5";
 import { IoEyeOffSharp } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
+import { MdDriveFileRenameOutline } from "react-icons/md";
+
+import {signupService} from "../services/signupService";
+
 const Signup = () => {
     const [showPass,setShowPass] = useState(false);
+     signupService({
+      email: "bibek@gmai.com",
+      userName: "username",
+      fullName: "bibek samal",
+      password:"bibek@gmail.com",
+     });
   return (
-    <section className="bg-black lg:w-9/12 md:w-10/12 w-full m-auto  grid md:grid-cols-2 grid-cols-1 relative h-screen  my-4">
-      <div className="img h-full relative   overflow-hidden ">
+    <section className="bg-black lg:w-9/12 md:w-10/12 w-full m-auto  grid md:grid-cols-2 grid-cols-1 relative h-max  my-4 ">
+      <div className="img h-screen relative   overflow-hidden ">
         <div className="img-con h-full relative">
           <img src="https://cdn.rareblocks.xyz/collection/celebration/images/signup/4/girl-working-on-laptop.jpg" alt="" className="h-full w-full object-cover"/>
         </div>
@@ -24,7 +34,7 @@ const Signup = () => {
       <div className="form    h-full relative text-white flex ">
         
 
-      <div className="form  lg:w-11/12 m-auto w-full px-2 mt-4 md:mt-0  flex flex-col gap-4">
+      <div className="form  lg:w-11/12 m-auto w-full px-2 mt-4 md:mt-0  flex flex-col gap-4 ">
         <div className="heading mb-4">
           <h1 className="lg:text-4xl font-bold text-xl mb-2">Signup to BibeBlog</h1>
           <p className="text-lg font-thin text-gray-300">Already have account <span className="text-indigo-500 hover:text-indigo-600 cursor-pointer  hover:underline ">signin</span></p>
@@ -33,7 +43,7 @@ const Signup = () => {
           <label className="lg:text-xl text-lg">Full Name</label>
           <div className="ip-outer">
             <div className="ip py-4 text-gray-300 flex items-center border border-transparent focus-within:border-white focus-within:bg-inherit bg-[#16181c] transition-all duration-300">
-              <div className="logo lg:text-2xl text-xl font-bold px-2 "><IoPerson />
+              <div className="logo lg:text-2xl text-xl font-bold px-2 "><MdDriveFileRenameOutline />
               </div>
               <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent " placeholder="Enter full name"/>
             </div>
@@ -45,6 +55,17 @@ const Signup = () => {
           <div className="ip-outer">
             <div className="ip py-4 text-gray-300 flex items-center border border-transparent focus-within:border-white focus-within:bg-inherit bg-[#16181c] transition-all duration-300">
               <div className="logo lg:text-2xl text-xl font-bold px-2 "><MdEmail />
+              </div>
+              <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter email address"/>
+            </div>
+            <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 invisible">this is error message</div>
+          </div>
+        </div>
+        <div className="userName flex flex-col gap-2">
+          <label className="lg:text-xl text-lg">userName</label>
+          <div className="ip-outer">
+            <div className="ip py-4 text-gray-300 flex items-center border border-transparent focus-within:border-white focus-within:bg-inherit bg-[#16181c] transition-all duration-300">
+              <div className="logo lg:text-2xl text-xl font-bold px-2 "><IoPerson />
               </div>
               <input type="text" className="outline-none py-1 pl-2 lg:text-xl text-lg w-full bg-transparent" placeholder="Enter email address"/>
             </div>
