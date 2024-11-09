@@ -20,6 +20,8 @@ const MyBlog = lazy(() => import("./pages/MyBlog.tsx"));
 const AllBlog = lazy(() => import("./pages/AllBlog.tsx"));
 const ReadBlog = lazy(() => import("./pages/ReadBlog.tsx"));
 
+import SignupSkeliton from "./skelitons/SignupSkeliton.tsx";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App></App>}>
@@ -34,7 +36,7 @@ const router = createBrowserRouter(
       <Route
         path="signup/"
         element={
-          <Suspense fallback={"loading..."}>
+          <Suspense fallback={<SignupSkeliton></SignupSkeliton>}>
             <Signup></Signup>
           </Suspense>
         }

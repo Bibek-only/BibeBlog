@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { IoPerson } from "react-icons/io5";
@@ -11,24 +11,46 @@ import { MdDriveFileRenameOutline } from "react-icons/md";
 import { signupService } from "../services/signupService";
 import { signupType } from "@bibek-samal/bibeblog-common";
 
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import toast from 'react-hot-toast';
+import Loader from "../skelitons/Loader";
 const Signup = () => {
+  //navigate to dashbord
+  const navigate = useNavigate();
+  function sucess(){
+    setTimeout(()=>{
+      navigate("/")
+    },500)
+  }
+
   //handel the form
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors,isSubmitting },
   } = useForm<signupType>();
 
   //handel submition of form
   const onSubmit: SubmitHandler<signupType> = async (data) => {
     const signupRes = await signupService(data);
-    console.log(signupRes);
+    if(signupRes?.success === true){
+      toast.success("User created sucess fully")
+      sucess();
+    }
+    
+
+    toast.error((signupRes?.error.response.data.message)?signupRes?.error.response.data.message:"can't do the operation")
+
   }
   
 
   const [showPass, setShowPass] = useState(false);
 
   return (
+    <>
+    {isSubmitting && <Loader></Loader>}
     <section className="bg-black lg:w-9/12 md:w-10/12 w-full m-auto  grid md:grid-cols-2 grid-cols-1 relative h-max  my-4 ">
       <div className="img h-screen relative    overflow-hidden ">
         <div className="img-con h-full relative ">
@@ -159,13 +181,16 @@ const Signup = () => {
           </div>
 
           {/* button for signup */}
+          <label htmlFor="sub w-full">
           <button
-            className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300"
-            type="submit"
+            className="bg-indigo-500 w-full py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300"
+           
           >
             Sign up
           </button>
-          <button className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300 relative ">
+          </label>
+          <input type="submit" id='sub' name='sub' className="hidden" disabled={isSubmitting}/>
+          <button className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300 relative">
             <div className="gle-lgo h-full top-0 left-4 absolute flex items-center ">
               <FaGoogle />
             </div>
@@ -174,6 +199,7 @@ const Signup = () => {
         </form>
       </div>
     </section>
+    </>
   );
 };
 
