@@ -2,7 +2,7 @@ import { FaTwitter, FaFacebook, FaInstagram, FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <section className=" w-full py-16 max-lg:py-8 border-t border-gray-300">
+    <section className=" w-full py-16 max-lg:py-8 border-t border-[#16181c]">
       <div className="top mb-28 max-lg:mb-6  lg:w-11/12 m-auto flex justify-evenly text-gray-300 max-lg:flex-wrap gap-2">
         <ul className="flex flex-col gap-6">
           <li className="text-2xl font-bold mb-6  text-indigo-500 hover:text-indigo-600 duration-300">Bibe-blog</li>

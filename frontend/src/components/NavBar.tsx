@@ -4,7 +4,7 @@ const NavBar = () => {
   return (
     // <!-- component -->
     <nav className="bg-black  shadow  w-100 px-8 md:px-auto sticky top-0 z-50">
-      <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
+      <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap ">
         {/* <!-- Logo --> */}
         <NavLink
           to=""
@@ -13,7 +13,7 @@ const NavBar = () => {
           BibeBlog
         </NavLink>
         <div className="text-gray-500 order-3 w-full md:w-auto md:order-2">
-          <ul className="flex justify-between font-bold">
+          <ul className="flex justify-between text-lg font-bold">
             <li className="md:px-4 md:py-2 hover:text-indigo-400">
               <NavLink to="">Home</NavLink>
             </li>

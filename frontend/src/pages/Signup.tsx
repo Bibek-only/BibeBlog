@@ -52,7 +52,7 @@ const Signup = () => {
     <>
     {isSubmitting && <Loader></Loader>}
     <section className="bg-black lg:w-9/12 md:w-10/12 w-full m-auto  grid md:grid-cols-2 grid-cols-1 relative h-max  my-4 ">
-      <div className="img h-screen relative    overflow-hidden ">
+      <div className="img md:h-screen relative    overflow-hidden ">
         <div className="img-con h-full relative ">
           <img
             src="https://images.pexels.com/photos/4050287/pexels-photo-4050287.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -84,7 +84,7 @@ const Signup = () => {
             <p className="text-lg font-thin text-gray-300">
               Already have account{" "}
               <span className="text-indigo-500 hover:text-indigo-600 cursor-pointer  hover:underline ">
-                signin
+                <NavLink to="/signin">signin</NavLink>
               </span>
             </p>
           </div>
@@ -190,7 +190,7 @@ const Signup = () => {
           </button>
           </label>
           <input type="submit" id='sub' name='sub' className="hidden" disabled={isSubmitting}/>
-          <button className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300 relative">
+          <button className="bg-indigo-500 py-2 lg:text-2xl text-xl font-bold text-gray-300 hover:text-white hover:bg-indigo-600 duration-300 relative hidden">
             <div className="gle-lgo h-full top-0 left-4 absolute flex items-center ">
               <FaGoogle />
             </div>

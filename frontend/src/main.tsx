@@ -44,7 +44,7 @@ const router = createBrowserRouter(
       <Route
         path="signin/"
         element={
-          <Suspense fallback={"loading..."}>
+          <Suspense fallback={<SignupSkeliton></SignupSkeliton>}>
             <Signin></Signin>
           </Suspense>
         }
