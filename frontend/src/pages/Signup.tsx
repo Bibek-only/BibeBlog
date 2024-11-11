@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useState,useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { IoPerson } from "react-icons/io5";
@@ -16,7 +16,21 @@ import { useNavigate } from "react-router-dom";
 
 import toast from 'react-hot-toast';
 import Loader from "../skelitons/Loader";
+
+import { isLogedinAtom } from "../store/atom/isloginatom";
+import { useSetRecoilState } from "recoil";
+
 const Signup = () => {
+  const setIsLogedin = useSetRecoilState(isLogedinAtom);
+  //set the user is loged in or not
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      setIsLogedin(true)
+    }else{
+      setIsLogedin(false)
+    }
+  },[])
+  
   //navigate to dashbord
   const navigate = useNavigate();
   function sucess(){

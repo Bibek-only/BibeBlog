@@ -1,3 +1,4 @@
+import { RecoilRoot } from "recoil";
 import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -19,6 +20,7 @@ const UpdateBlog = lazy(() => import("./pages/UpdateBlog.tsx"));
 const MyBlog = lazy(() => import("./pages/MyBlog.tsx"));
 const AllBlog = lazy(() => import("./pages/AllBlog.tsx"));
 const ReadBlog = lazy(() => import("./pages/ReadBlog.tsx"));
+const SavedBlog = lazy(()=> import("./pages/SavedBlog.tsx"))
 
 import SignupSkeliton from "./skelitons/SignupSkeliton.tsx";
 
@@ -98,6 +100,14 @@ const router = createBrowserRouter(
         }
       ></Route>
       <Route
+        path="saved-blog/"
+        element={
+          <Suspense fallback={"loading..."}>
+            <SavedBlog></SavedBlog>
+          </Suspense>
+        }
+      ></Route>
+      <Route
         path="read-blog/"
         element={
           <Suspense fallback={"loading..."}>
@@ -109,7 +119,9 @@ const router = createBrowserRouter(
   )
 );
 createRoot(document.getElementById("root")!).render(
-  
+  <RecoilRoot>
+
     <RouterProvider router={router}></RouterProvider>
+  </RecoilRoot>
   
 );
