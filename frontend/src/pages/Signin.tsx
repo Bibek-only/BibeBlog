@@ -67,7 +67,7 @@ const Signin = () => {
   return (
     <>
     {isSubmitting && <Loader></Loader>}
-    <section className="bg-black lg:w-9/12 md:w-10/12 w-full m-auto  grid md:grid-cols-2 grid-cols-1 relative h-max  my-4 ">
+    <section className="bg-black lg:w-9/12 md:w-10/12 w-full m-auto  grid md:grid-cols-2 grid-cols-1 relative h-max   my-4 md:my-36 ">
       <div className="img md:h-full  flex items-center relative   overflow-hidden ">
         <div className="img-con  relative w-full">
           <img

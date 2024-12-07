@@ -1,39 +1,41 @@
-import { FaEdit, } from 'react-icons/fa';
-import { MdDelete, } from 'react-icons/md';
+import { useEffect } from "react";
+import { isLogedinAtom } from "../store/atom/isloginatom";
+import { useSetRecoilState } from "recoil";
 
+import { FaArrowRight } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
+import { AiFillLike } from "react-icons/ai";
 const MyBlog = () => {
+  const setIsLogedin = useSetRecoilState(isLogedinAtom);
+  //set the user is loged in or not
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      setIsLogedin(true)
+    }else{
+      setIsLogedin(false)
+    }
+  },[])
   return (
-    <section className="min-h-screen w-full  lg:w-10/12  m-auto  ">
-      
-      <div className="Allblog w-3/4 lg:pl-2  m-auto ">
-      <h1 className="text-indigo-500 text-xl font-bold">My blog's</h1>
-      <div className="blog-card lg:h-72 relative bg-black lg:bg-gray-950  lg:flex lg:gap-2 lg:items-center p-2">
-        
-        <div className="img lg:h-72 lg:w-80 relative flex items-center">
-          <div className="lg:hidden overlap h-60 w-80 absolute z-10 bg-black opacity-60"></div>
-        <img src="https://preview.redd.it/zfohxnf8t3pa1.jpg?width=1024&format=pjpg&auto=webp&v=enabled&s=0f660e0a56476991ee3b97f2885d8c010fec5b97" alt="" className="rounded-lg h-60 w-80"/>
-        </div>
-        <div className="info text-black lg:flex flex-col items-start gap-2 max-lg:absolute max-lg:bottom-4 max-lg:left-4  z-20">
-        <p className="text-gray-100 text-xl font-semibold max-lg:text-lg">Published on: <span className="text-lg max-lg:text-sm text-gray-300">13 jun 2022</span></p>
-        <p className="text-gray-100 text-xl font-semibold max-lg:text-lg">Author: <span className="text-lg text-gray-300 max-lg:text-sm">Bibke samal</span></p>
-        <h1 className="text-gray-100 text-xl font-semibold max-lg:text-lg">How to become a good dev</h1>
-        <div className="btns flex gap-3 items-center max-lg:flex-col max-lg:items-start">
-          <div className='flex gap-2'>
-        <button className="px-6 py-2 rounded-2xl text-xl max-lg:text-sm max-lg:py-1 max-lg:px-4 bg-indigo-500 font-semi-bold text-gray-100 hover:bg-indigo-600 hover:text-white">Read</button>
-        <button className="px-6 py-2 rounded-2xl text-xl max-lg:text-sm max-lg:py-1 max-lg:px-2 bg-indigo-500 font-semi-bold text-gray-100 hover:bg-indigo-600 hover:text-white">Published</button>
-        </div>
-        <div className="icons text-indigo-500  text-3xl flex gap-3">
-        <span className='hover:text-indigo-600'><FaEdit /></span>
-        <span className='hover:text-indigo-600'><MdDelete /></span>
-        </div>
-        </div>
-        
-        </div>
-      </div>
-      
-      
+    <section className="min-h-screen w-full md:w-9/12 m-auto  pt-4 md:px-16 ">
+      <div className="blog h-80  flex flex-col-reverse  text-white md:flex-row border-b mb-4">
+        <div className="content h-1/2 pl-2 md:pl-0 md:h-full flex flex-col gap-2 items-start md:justify-center">
+          <h1 className="text-2xl md:text-4xl font-bold">This is title</h1>
+          <p className="text-xl md:text-2xl font-thin h-20 md:h-24 w-full overflow-hidden text-gray-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut eveniet nobis laborum iste eius optio itaque eum, recusandae nemo in nulla voluptates? Fugit ipsam voluptatibus voluptatum commodi vitae, necessitatibus eaque?</p>
+          <div className="btns flex gap-4">
+          <div className="text-xl font-bold py-1  text-indigo-500  flex items-center gap-1"><AiFillLike /><span>100</span></div>
+          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center "><FaRegEdit /></button>
+          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center "><FaTrash /></button>
+          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center gap-1">read more <FaArrowRight /></button>
           
+          </div>
+        </div>
+        <div className="image h-1/2 md:h-full w-full flex items-center justify-center "> <div className="img h-36  w-36 md:w-48 md:h-48 bg-slate-500 rounded-full">
+          <img src="https://tse4.mm.bing.net/th?id=OIP.7ITF2gx8_a3s4NbnDOpZzAHaHa&pid=Api&P=0&h=180" alt="" className=" h-full w-full rounded-full object-cover object-center "/>
+          </div> </div>
       </div>
+     
+      
     </section>
   )
 }

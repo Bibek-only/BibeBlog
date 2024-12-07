@@ -1,5 +1,5 @@
 import { RecoilRoot } from "recoil";
-import { lazy, StrictMode, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -23,6 +23,9 @@ const ReadBlog = lazy(() => import("./pages/ReadBlog.tsx"));
 const SavedBlog = lazy(()=> import("./pages/SavedBlog.tsx"))
 
 import SignupSkeliton from "./skelitons/SignupSkeliton.tsx";
+import AllblogSkeliton from "./skelitons/AllblogSkeliton.tsx";
+import CreateSkeliton from "./skelitons/CreateSkeliton.tsx";
+import ReadblogSkeliton from "./skelitons/ReadblogSkeliton.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +33,7 @@ const router = createBrowserRouter(
       <Route
         path=""
         element={
-          <Suspense fallback={"loading..."}>
+          <Suspense fallback={<AllblogSkeliton></AllblogSkeliton>}>
             <AllBlog></AllBlog>
           </Suspense>
         }
@@ -78,7 +81,7 @@ const router = createBrowserRouter(
       <Route
         path="create-blog/"
         element={
-          <Suspense fallback={"loading..."}>
+          <Suspense fallback={<CreateSkeliton></CreateSkeliton>}>
             <CreateBlog></CreateBlog>
           </Suspense>
         }
@@ -94,7 +97,7 @@ const router = createBrowserRouter(
       <Route
         path="my-blog/"
         element={
-          <Suspense fallback={"loading..."}>
+          <Suspense fallback={<AllblogSkeliton></AllblogSkeliton>}>
             <MyBlog></MyBlog>
           </Suspense>
         }
@@ -102,15 +105,15 @@ const router = createBrowserRouter(
       <Route
         path="saved-blog/"
         element={
-          <Suspense fallback={"loading..."}>
+          <Suspense fallback={<AllblogSkeliton />}>
             <SavedBlog></SavedBlog>
           </Suspense>
         }
       ></Route>
       <Route
-        path="read-blog/"
+        path="read-blog/:blogid"
         element={
-          <Suspense fallback={"loading..."}>
+          <Suspense fallback={<ReadblogSkeliton></ReadblogSkeliton>}>
             <ReadBlog></ReadBlog>
           </Suspense>
         }
