@@ -17,7 +17,8 @@ async function getUserInformation(c: any) {
       select: {
         id: true,
         email: true,
-        fullName: true
+        fullName: true,
+        userName: true,
       },
     });
 

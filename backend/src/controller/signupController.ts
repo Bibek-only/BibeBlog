@@ -59,7 +59,7 @@ async function signup(c: any) {
     
     c.status(500);
     return c.json(
-      new apiresponse(false,500,"Internal server error in signup end point")
+      new apiresponse(false,500,"Can't register the user check email or user name")
     )
   }
 }

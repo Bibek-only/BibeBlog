@@ -22,7 +22,7 @@ async function getSpecificBlog(c:any){
         const blog = await prisma.blog.findUnique({
             where:{
                 id: id,
-                authorId: c.get("userId")
+                // authorId: c.get("userId")
             }
         })
         

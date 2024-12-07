@@ -12,7 +12,7 @@ app.use(prettyJSON());
 app.route("/api/v1/user", userRouter);
 app.route("/api/v1/blog", blogRouter);
 
-app.get("/", (c) => {
+app.get("/api/greet", (c) => {
   return c.text("Hello Hono!");
 });
 

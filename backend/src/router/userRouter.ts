@@ -28,7 +28,7 @@ userRouter.post("/signup",(c)=>{
  return signup(c)
 })
 
-userRouter.get("/signin",(c)=>{
+userRouter.post("/signin",(c)=>{
     return signin(c)
 })
 
