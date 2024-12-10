@@ -52,7 +52,7 @@ const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
     <section className="w-full md:w-9/12  m-auto min-h-screen flex itmes-center  text-white flex-col gap-4 md:px-6 px-2 py-4">
       <h1 className=" text-center text-4xl font-bold">{blogInfo.title}</h1>
       <div className="img w-full h-80 md:h-96 bg-black">
-        <img className="w-full h-full object-cover object-center" src={(blogInfo.coverImage)?blogInfo.coverImage: "https://up.yimg.com/ib/th?id=OIP.JwiUo05ANXLuYk6nMZE9UwHaE8&pid=Api&rs=1&c=1&qlt=95&w=178&h=118"} alt="" />
+        <img className="w-full h-full object-cover object-center" src={(blogInfo.coverImage)?blogInfo.coverImage:"https://tse2.mm.bing.net/th?id=OIP.NfYZ6yGINT_NzZDDzEwskQHaEK&pid=Api&P=0&w=300&h=300"} alt="" />
       </div>
       <p className="w-full md:px-8 px-4  text-lg font-semibold">{blogInfo.content}</p>
       <div className="btns w-full md:px-8 px-4 flex py-6 gap-6">

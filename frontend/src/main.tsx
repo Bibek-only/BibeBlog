@@ -118,6 +118,14 @@ const router = createBrowserRouter(
           </Suspense>
         }
       ></Route>
+      <Route
+        path="my-blog/read-blog/:blogid"
+        element={
+          <Suspense fallback={<ReadblogSkeliton></ReadblogSkeliton>}>
+            <ReadBlog></ReadBlog>
+          </Suspense>
+        }
+      ></Route>
     </Route>
   )
 );

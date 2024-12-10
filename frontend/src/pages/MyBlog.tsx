@@ -1,43 +1,117 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { isLogedinAtom } from "../store/atom/isloginatom";
-import { useSetRecoilState } from "recoil";
-
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { getUserInfoService } from "../services/getUserInfoService";
 import { FaArrowRight } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
+import { fullNameAtom } from "../store/atom/userInfoAtom";
+import getMyBlogService from "../services/getMyblogService";
+import { myBlogAtom } from "../store/atom/myBlogAtom";
+import AllblogSkeliton from "../skelitons/AllblogSkeliton";
+import { useNavigate } from "react-router-dom";
+import Loader from "../skelitons/Loader";
+
 const MyBlog = () => {
+
+  const setfullName = useSetRecoilState(fullNameAtom);
   const setIsLogedin = useSetRecoilState(isLogedinAtom);
+  const [showSkeliton, setShowSkeliton] = useState(true);
+  const [showLoader, setShowLoader] = useState(false)
+  const [myBlog,setMyBlogAtom] = useRecoilState(myBlogAtom)
+  const navigate = useNavigate();
+
+
+
   //set the user is loged in or not
   useEffect(()=>{
     if(localStorage.getItem('token')){
       setIsLogedin(true)
+      getUserInfoService()
+        .then((res) => {
+          
+          setfullName(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        //set the my blogs
+        getMyBlogService()
+        .then((res)=>{
+          console.log(res);
+          setMyBlogAtom(res);
+          setShowSkeliton(false);
+        }).catch((err)=>{
+          console.log("some error in the my blog service",err)
+        })
     }else{
       setIsLogedin(false)
+      navigate("/signin")
     }
   },[])
-  return (
-    <section className="min-h-screen w-full md:w-9/12 m-auto  pt-4 md:px-16 ">
-      <div className="blog h-80  flex flex-col-reverse  text-white md:flex-row border-b mb-4">
-        <div className="content h-1/2 pl-2 md:pl-0 md:h-full flex flex-col gap-2 items-start md:justify-center">
-          <h1 className="text-2xl md:text-4xl font-bold">This is title</h1>
-          <p className="text-xl md:text-2xl font-thin h-20 md:h-24 w-full overflow-hidden text-gray-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut eveniet nobis laborum iste eius optio itaque eum, recusandae nemo in nulla voluptates? Fugit ipsam voluptatibus voluptatum commodi vitae, necessitatibus eaque?</p>
-          <div className="btns flex gap-4">
-          <div className="text-xl font-bold py-1  text-indigo-500  flex items-center gap-1"><AiFillLike /><span>100</span></div>
-          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center "><FaRegEdit /></button>
-          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center "><FaTrash /></button>
-          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center gap-1">read more <FaArrowRight /></button>
-          
+
+  async function delay() {
+    await new Promise((res, rej) => {
+      setTimeout(() => {
+        res("delay resolved");
+      }, 1000);
+    });
+  }
+  async function readblog(e:any){
+    setShowLoader(true);
+    await delay();
+    setShowLoader(false)
+    navigate(`read-blog/${e}`);
+  }
+
+
+  if(showSkeliton){
+    return(<AllblogSkeliton></AllblogSkeliton>)
+  }else{
+    return (
+      <>
+      {(showLoader)? <Loader /> : <></>}
+      <section className="w-full min-h-screen md:w-9/12 mx-auto ">
+        {
+          myBlog.map((e:any)=>{
+            return(
+              <div key={e.id} id={e.id} className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4">
+        <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
+          <div className="title text-xl">{e.title}</div>
+          <p className="h-24 overflow-hidden w-full text-sm flex items-center">{e.content}</p>
+          <div className="btns flex items-center gap-4">
+            <button className="flex items-center gap-2 text-indigo-500 hover:text-indigo-600" onClick={()=>{
+             
+            }}><AiFillLike></AiFillLike>100</button>
+            <button className=" text-indigo-500 hover:text-indigo-600" onClick={()=>{
+             
+            }}><FaRegEdit></FaRegEdit></button>
+            <button className=" text-indigo-500 hover:text-indigo-600" onClick={()=>{
+             
+            }}><FaTrash></FaTrash></button>
+          <button className="flex gap-2 items-center text-indigo-500 hover:text-indigo-600" onClick={(event)=>{
+           const btnTarget =  event.target as HTMLButtonElement;
+           btnTarget.disabled = true; //disabled the button
+
+           readblog(e.id);
+          }}>Read more <FaArrowRight></FaArrowRight></button>
           </div>
         </div>
-        <div className="image h-1/2 md:h-full w-full flex items-center justify-center "> <div className="img h-36  w-36 md:w-48 md:h-48 bg-slate-500 rounded-full">
-          <img src="https://tse4.mm.bing.net/th?id=OIP.7ITF2gx8_a3s4NbnDOpZzAHaHa&pid=Api&P=0&h=180" alt="" className=" h-full w-full rounded-full object-cover object-center "/>
-          </div> </div>
+        <div className="image h-36 w-36 md:h-48 md:w-48 rounded-full bg-slate-500 relative">
+          <img src={(e.coverImage)?e.coverImage:"https://tse2.mm.bing.net/th?id=OIP.NfYZ6yGINT_NzZDDzEwskQHaEK&pid=Api&P=0&w=300&h=300"} alt="blogimgx" className="h-full w-full rounded-full object-center object-cover" />
+        </div>
       </div>
-     
-      
-    </section>
-  )
+            )
+          })
+        }
+       
+        
+      </section>
+      </>
+    )
+  }
 }
 
 export default MyBlog
