@@ -11,7 +11,9 @@ import removeFromSavedBlog from "../controller/removeFromSavedBlog"
 const blogRouter = new Hono<{
     Bindings:{
       DATABASE_URL:string,
-      JWT_SECREAT:string
+      JWT_SECREAT:string,
+      CLOUD_NAME:string,
+      CLOUD_URL:string,
     }
   }>();
 

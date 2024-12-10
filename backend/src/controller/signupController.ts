@@ -46,6 +46,7 @@ async function signup(c: any) {
       {
         id: user.id,
         email: user.email,
+        fullName: user.fullName
       },
       c.env.JWT_SECREAT
     );

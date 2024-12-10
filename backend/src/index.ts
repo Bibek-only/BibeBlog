@@ -2,12 +2,18 @@ import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
 import userRouter from "./router/userRouter";
 import blogRouter from "./router/blogRouter";
+import { cors } from "hono/cors";
 const app = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECREAT: string;
   };
 }>();
+
+
+app.use(cors({
+  origin: "*"
+}))
 app.use(prettyJSON());
 app.route("/api/v1/user", userRouter);
 app.route("/api/v1/blog", blogRouter);
