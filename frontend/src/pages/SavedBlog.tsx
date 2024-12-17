@@ -16,26 +16,36 @@ const SavedBlog = () => {
     }
   },[])
   return (
-    <section className="min-h-screen w-full md:w-9/12 m-auto  pt-4 md:px-16 ">
-      <div className="blog h-80  flex flex-col-reverse  text-white md:flex-row border-b mb-4">
-        <div className="content h-1/2 pl-2 md:pl-0 md:h-full flex flex-col gap-2 items-start md:justify-center">
-          <h1 className="text-2xl md:text-4xl font-bold">This is title</h1>
-          <p className="text-xl md:text-2xl font-thin h-20 md:h-24 w-full overflow-hidden text-gray-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut eveniet nobis laborum iste eius optio itaque eum, recusandae nemo in nulla voluptates? Fugit ipsam voluptatibus voluptatum commodi vitae, necessitatibus eaque?</p>
-          <div className="btns flex gap-4">
-          
-          
-          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center "><FaTrash /></button>
-          <button className="text-xl font-bold py-1 cursor-pointer hover:underline text-indigo-500 hover:text-indigo-600 duration-300  flex items-center gap-1">read more <FaArrowRight /></button>
-          
+    <section className="w-full min-h-screen md:w-9/12 mx-auto ">
+        
+              <div  className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4">
+        <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
+          <div className="title text-xl">Hello i am title</div>
+          <p className="h-24 overflow-hidden w-full text-sm flex items-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit dolore cumque, earum explicabo voluptatum maiores molestiae laudantium sunt ipsa sed iusto illum ea soluta quidem! Dolore commodi asperiores natus iusto.</p>
+          <div className="btns flex items-center gap-4">
+            <p className="flex items-center gap-2 "><AiFillLike></AiFillLike>100</p>
+            {/* <button className=" text-indigo-500 hover:text-indigo-600" onClick={()=>{
+             
+            }}><FaRegEdit></FaRegEdit></button> */}
+            <button className=" text-indigo-500 hover:text-indigo-600  hover:underline" onClick={()=>{
+             
+            }}><FaTrash></FaTrash></button>
+          <button className="flex gap-2 items-center text-indigo-500 hover:text-indigo-600 hover:underline" onClick={(event)=>{
+           const btnTarget =  event.target as HTMLButtonElement;
+           btnTarget.disabled = true; //disabled the button
+
+           
+          }}>Read more <FaArrowRight></FaArrowRight></button>
           </div>
         </div>
-        <div className="image h-1/2 md:h-full w-full flex items-center justify-center "> <div className="img h-36  w-36 md:w-48 md:h-48 bg-slate-500 rounded-full">
-          <img src="https://tse4.mm.bing.net/th?id=OIP.7ITF2gx8_a3s4NbnDOpZzAHaHa&pid=Api&P=0&h=180" alt="" className=" h-full w-full rounded-full object-cover object-center "/>
-          </div> </div>
+        <div className="image h-36 w-36 md:h-48 md:w-48 rounded-full bg-slate-500 relative">
+          <img src={"https://tse2.mm.bing.net/th?id=OIP.NfYZ6yGINT_NzZDDzEwskQHaEK&pid=Api&P=0&w=300&h=300"} alt="blogimgx" className="h-full w-full rounded-full object-center object-cover" />
+        </div>
       </div>
-     
-      
-    </section>
+            
+       
+        
+      </section>
   )
 }
 

@@ -12,6 +12,7 @@ import { GoBookmarkSlashFill } from "react-icons/go";
 import Loader from "../skelitons/Loader";
 import ReadblogSkeliton from "../skelitons/ReadblogSkeliton";
 
+import addLikeService from "../services/addLike";
 
 const ReadBlog = () => {
   const [showLoader, setShowLoader] = useState(true);
@@ -20,6 +21,7 @@ const ReadBlog = () => {
   const params = useParams();
 
 const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
+const [likeCount, setLikeCount] = useState(0);
 
   //set the user is loged in or not and find the blogs
   useEffect(()=>{
@@ -29,7 +31,10 @@ const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
       //fetch the bog details
       getBlogInfoService(params.blogid)
       .then((res)=>{
+
         setBlogInfo(res);
+        setLikeCount(parseInt(blogInfo._count.likes));
+
         setShowSkeliton(false)
       }).catch((err)=>{
         console.log(err)
@@ -37,9 +42,16 @@ const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
     }else{
       setIsLogedin(false)
     }
-  },[])
+  },[likeCount])
 
-  //fetch params
+  //like blog serveice
+  async function doLike(btn:any){
+    const res = await addLikeService(parseInt(params.blogid!));
+    if(res?.success === true){
+      setLikeCount(likeCount+1);
+    }
+    btn.disabled = false;
+  }
   
   if(showSkeliton){
     return (
@@ -56,7 +68,11 @@ const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
       </div>
       <p className="w-full md:px-8 px-4  text-lg font-semibold">{blogInfo.content}</p>
       <div className="btns w-full md:px-8 px-4 flex py-6 gap-6">
-        <button className="text-lg font-bold flex items-center gap-2">100<AiFillLike /></button>
+        <button className="text-lg font-bold flex items-center gap-2 text-indigo-500 hover:text-indigo-600 hover:underline" onClick={(e)=>{
+          const btn = e.target as HTMLButtonElement;
+          btn.disabled = true;
+          doLike(btn);
+        }}><AiFillLike />{likeCount}</button>
         
         <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"><GoBookmarkFill /></button>
         <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"><GoBookmarkSlashFill /></button>

@@ -82,16 +82,14 @@ const MyBlog = () => {
           <div className="title text-xl">{e.title}</div>
           <p className="h-24 overflow-hidden w-full text-sm flex items-center">{e.content}</p>
           <div className="btns flex items-center gap-4">
-            <button className="flex items-center gap-2 text-indigo-500 hover:text-indigo-600" onClick={()=>{
+            <p className="flex items-center gap-2 "><AiFillLike></AiFillLike>{e._count.likes}</p>
+            {/* <button className=" text-indigo-500 hover:text-indigo-600" onClick={()=>{
              
-            }}><AiFillLike></AiFillLike>100</button>
-            <button className=" text-indigo-500 hover:text-indigo-600" onClick={()=>{
-             
-            }}><FaRegEdit></FaRegEdit></button>
-            <button className=" text-indigo-500 hover:text-indigo-600" onClick={()=>{
+            }}><FaRegEdit></FaRegEdit></button> */}
+            <button className=" text-indigo-500 hover:text-indigo-600  hover:underline" onClick={()=>{
              
             }}><FaTrash></FaTrash></button>
-          <button className="flex gap-2 items-center text-indigo-500 hover:text-indigo-600" onClick={(event)=>{
+          <button className="flex gap-2 items-center text-indigo-500 hover:text-indigo-600 hover:underline" onClick={(event)=>{
            const btnTarget =  event.target as HTMLButtonElement;
            btnTarget.disabled = true; //disabled the button
 

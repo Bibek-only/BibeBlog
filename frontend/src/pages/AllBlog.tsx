@@ -12,6 +12,8 @@ import { fullNameAtom } from "../store/atom/userInfoAtom";
 import { getUserInfoService } from "../services/getUserInfoService";
 
 import { FaArrowRight } from "react-icons/fa";
+import { AiFillLike } from "react-icons/ai";
+
 const AllBlog = () => {
   const setIsLogedin = useSetRecoilState(isLogedinAtom);
   const setfullName = useSetRecoilState(fullNameAtom);
@@ -113,12 +115,15 @@ const AllBlog = () => {
             <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
               <div className="title text-xl">{blg.title}</div>
               <p className="h-24 overflow-hidden w-full text-sm flex items-center">{blg.content}</p>
+              <div className="btns flex items-center gap-4">
+                <p className="flex items-center gap-2 "><AiFillLike />{blg._count.likes}</p>
               <button className="flex gap-2 items-center text-indigo-500 hover:text-indigo-600 hover:underline" onClick={(event)=>{
                 const btnTarget =  event.target as HTMLButtonElement;
                 btnTarget.disabled = true; //disabled the button
   
                 readblog(blg.id);
               }}>Read more <FaArrowRight></FaArrowRight></button>
+              </div>
             </div>
             <div className="image h-36 w-36 md:h-48 md:w-48 rounded-full bg-slate-500 relative">
               <img src="https://tse4.mm.bing.net/th?id=OIP.7ITF2gx8_a3s4NbnDOpZzAHaHa&pid=Api&P=0&h=180" alt="blogimg" className="h-full w-full rounded-full object-center object-cover" />

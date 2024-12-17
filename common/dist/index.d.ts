@@ -1,31 +1,25 @@
 import { z } from "zod";
-declare const singupSchema: z.ZodObject<{
+export declare const singupSchema: z.ZodObject<{
     email: z.ZodString;
     userName: z.ZodString;
-    firstName: z.ZodString;
-    middleName: z.ZodOptional<z.ZodString>;
-    lastName: z.ZodOptional<z.ZodString>;
+    fullName: z.ZodString;
     password: z.ZodString;
     profilePhoto: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     email: string;
     userName: string;
-    firstName: string;
+    fullName: string;
     password: string;
-    middleName?: string | undefined;
-    lastName?: string | undefined;
     profilePhoto?: string | undefined;
 }, {
     email: string;
     userName: string;
-    firstName: string;
+    fullName: string;
     password: string;
-    middleName?: string | undefined;
-    lastName?: string | undefined;
     profilePhoto?: string | undefined;
 }>;
 export type signupType = z.infer<typeof singupSchema>;
-declare const singinSchema: z.ZodObject<{
+export declare const singinSchema: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
@@ -36,7 +30,7 @@ declare const singinSchema: z.ZodObject<{
     password: string;
 }>;
 export type signinType = z.infer<typeof singinSchema>;
-declare const createBlogSchema: z.ZodObject<{
+export declare const createBlogSchema: z.ZodObject<{
     title: z.ZodString;
     content: z.ZodString;
     coverImage: z.ZodOptional<z.ZodString>;
@@ -49,8 +43,21 @@ declare const createBlogSchema: z.ZodObject<{
     content: string;
     coverImage?: string | undefined;
 }>;
-export type createBlogType = z.infer<typeof createBlogSchema>;
-declare const updateBlogSchema: z.ZodObject<{
+export declare const createBlogSchemaFrontend: z.ZodObject<{
+    title: z.ZodString;
+    content: z.ZodString;
+    coverImage: z.ZodEffects<z.ZodEffects<z.ZodType<File, z.ZodTypeDef, File>, File, File>, File, File>;
+}, "strip", z.ZodTypeAny, {
+    title: string;
+    content: string;
+    coverImage: File;
+}, {
+    title: string;
+    content: string;
+    coverImage: File;
+}>;
+export type createBlogTypeFrontend = z.infer<typeof createBlogSchemaFrontend>;
+export declare const updateBlogSchema: z.ZodObject<{
     id: z.ZodNumber;
     title: z.ZodString;
     content: z.ZodString;
@@ -67,4 +74,3 @@ declare const updateBlogSchema: z.ZodObject<{
     coverImage?: string | undefined;
 }>;
 export type updateBlogType = z.infer<typeof updateBlogSchema>;
-export {};

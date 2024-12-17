@@ -13,7 +13,7 @@ export default async function getBlogInfoService(blogId: any){
         return axiosRes.data.data;
     } catch (error) {
         console.log(error)
-        return {title: null, content: null, coverImage:null}
+        return {title: null, content: null, coverImage:null, _count:{likes:0}}
     }
     
 }
