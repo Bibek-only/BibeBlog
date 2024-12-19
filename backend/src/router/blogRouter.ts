@@ -7,7 +7,10 @@ import getAllBlogs from "../controller/getAllBlog";
 import getMyBlogs from "../controller/getMyBlogs";
 import getSpecificBlog from "../controller/getSpecificBlog";
 import addInSaveBlog from "../controller/addInSavedBlog";
-import removeFromSavedBlog from "../controller/removeFromSavedBlog"
+import removeFromSavedBlog from "../controller/removeFromSavedBlog";
+import likeBlog from "../controller/likeBlog";
+import getSavedBlogs from "../controller/getSavedBlog"
+
 const blogRouter = new Hono<{
     Bindings:{
       DATABASE_URL:string,
@@ -51,6 +54,14 @@ blogRouter.post("/addinsavedblog",(c)=>{
 
 blogRouter.delete("/removefromsavedblog",(c)=>{
   return removeFromSavedBlog(c);
+})
+
+blogRouter.post("/likeblog",(c)=>{
+  return likeBlog(c);
+})
+
+blogRouter.get("/getsavedblog",(c)=>{
+  return getSavedBlogs(c);
 })
 
 export default blogRouter

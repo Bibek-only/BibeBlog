@@ -40,7 +40,7 @@ const MyBlog = () => {
         //set the my blogs
         getMyBlogService()
         .then((res)=>{
-          console.log(res);
+          
           setMyBlogAtom(res);
           setShowSkeliton(false);
         }).catch((err)=>{

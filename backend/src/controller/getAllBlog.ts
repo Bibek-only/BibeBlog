@@ -12,6 +12,12 @@ async function getAllBlogs(c: any) {
         authorId: {
           not: c.get("userId"),
         },
+        
+      },
+      include: {
+        _count: {
+          select: { likes: true }, // Count the number of likes for each blog
+        },
       },
     });
     if (!allBlogs) {

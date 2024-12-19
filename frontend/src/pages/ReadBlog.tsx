@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { isLogedinAtom } from "../store/atom/isloginatom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import getBlogInfoService from "../services/getBlogInfo";
 import { blogAtom } from "../store/atom/blogAtom";
 
@@ -13,15 +13,31 @@ import Loader from "../skelitons/Loader";
 import ReadblogSkeliton from "../skelitons/ReadblogSkeliton";
 
 import addLikeService from "../services/addLike";
+import savedBlogService from "../services/savedBlogService";
+import unsaveBlogService from "../services/unsaveBlog";
+
+
+import toast from 'react-hot-toast';
 
 const ReadBlog = () => {
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
   const [showSkeliton, setShowSkeliton] = useState(true);
   const setIsLogedin = useSetRecoilState(isLogedinAtom);
   const params = useParams();
 
 const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
 const [likeCount, setLikeCount] = useState(0);
+
+
+const navigate = useNavigate();
+
+async function delay() {
+  await new Promise((res, rej) => {
+    setTimeout(() => {
+      res("delay resolved");
+    }, 500);
+  });
+}
 
   //set the user is loged in or not and find the blogs
   useEffect(()=>{
@@ -46,11 +62,53 @@ const [likeCount, setLikeCount] = useState(0);
 
   //like blog serveice
   async function doLike(btn:any){
+    setShowLoader(true);
     const res = await addLikeService(parseInt(params.blogid!));
     if(res?.success === true){
       setLikeCount(likeCount+1);
     }
+    setShowLoader(false);
     btn.disabled = false;
+  }
+  
+  //save the blog service
+  async function saveBlog(btn: any){
+    setShowLoader(true);
+    const res = await savedBlogService(parseInt(params.blogid!));
+    if(res?.success === true){
+      toast.success(res?.msg);
+      await delay();
+      // navigate to the save blog section ater delay
+      navigate("/saved-blog")
+    }
+    else{
+      toast.error((res?.msg)? res.msg: "can't save the blog");
+      setShowLoader(false);
+
+      
+      
+    }
+    btn.disabled=false;
+
+  }
+  
+  //unsave the blog service
+  async function unSaveBlog(btn: any){
+    setShowLoader(true);
+    const res = await unsaveBlogService(parseInt(params.blogid!));
+    if(res?.success === true){
+      toast.success(res?.msg);
+      await delay();
+      navigate("/")
+    }
+    else{
+      toast.error((res?.msg)? res.msg: "Blog unsave fail");
+      setShowLoader(false);
+
+      
+      
+    }
+    btn.disabled=false;
   }
   
   if(showSkeliton){
@@ -61,6 +119,8 @@ const [likeCount, setLikeCount] = useState(0);
 
   }
   return (
+    <>
+    {showLoader && <Loader></Loader>}
     <section className="w-full md:w-9/12  m-auto min-h-screen flex itmes-center  text-white flex-col gap-4 md:px-6 px-2 py-4">
       <h1 className=" text-center text-4xl font-bold">{blogInfo.title}</h1>
       <div className="img w-full h-80 md:h-96 bg-black">
@@ -72,13 +132,26 @@ const [likeCount, setLikeCount] = useState(0);
           const btn = e.target as HTMLButtonElement;
           btn.disabled = true;
           doLike(btn);
-        }}><AiFillLike />{likeCount}</button>
+        }}><AiFillLike />{blogInfo._count.likes}</button>
         
-        <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"><GoBookmarkFill /></button>
-        <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"><GoBookmarkSlashFill /></button>
+        <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"
+        onClick={(e)=>{
+          const btn = e.target as HTMLButtonElement;
+          btn.disabled = true;
+          saveBlog(btn);
+        }}
+        ><GoBookmarkFill /></button>
+        <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"
+         onClick={(e)=>{
+          const btn = e.target as HTMLButtonElement;
+          btn.disabled = true;
+          unSaveBlog(btn);
+        }}
+        ><GoBookmarkSlashFill /></button>
         
       </div>
     </section>
+    </>
   )
 
 }

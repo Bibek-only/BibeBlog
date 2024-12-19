@@ -23,8 +23,15 @@ async function getSpecificBlog(c:any){
             where:{
                 id: id,
                 // authorId: c.get("userId")
-            }
+            },
+            include: {
+                _count: {
+                  select: { likes: true }, // Count the number of likes for each blog
+                },
+              },
         })
+
+        
         
         if(!blog){
             c.status(404)

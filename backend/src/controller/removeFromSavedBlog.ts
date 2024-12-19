@@ -8,6 +8,7 @@ async function removeFromSavedBlog(c: any) {
   if (!savedBlogId) {
     return c.jons(new apiresponse(false, 400, "No blog id found"));
   }
+  
 
   //initialize the prisma client
   const prisma = new PrismaClient({
@@ -18,9 +19,14 @@ async function removeFromSavedBlog(c: any) {
   try {
     const removeBlogRes = await prisma.savedBlog.delete({
         where:{
-            id: savedBlogId
+          userId_blogId: { 
+            userId: c.get("userId"),
+            blogId: savedBlogId,
+        },
         }
     })
+
+    
 
     if(!removeBlogRes){
         return c.json(

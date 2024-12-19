@@ -10,7 +10,12 @@ async function getMyBlogs(c: any) {
     const allBlogs = await prisma.blog.findMany({
       where: {
         authorId: c.get("userId")
-      }
+      },
+      include: {
+        _count: {
+          select: { likes: true }, // Count the number of likes for each blog
+        },
+      },
     });
     if (!allBlogs) {
       c.status(400);

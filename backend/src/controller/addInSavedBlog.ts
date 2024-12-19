@@ -35,7 +35,7 @@ async function addInSaveBlog(c: any) {
   } catch (error) {
     
     return c.json(
-        new apiresponse(false,400,"Blog was not get saved xx")
+        new apiresponse(false,400,"Blog was not get saved ")
     )
   }
 
