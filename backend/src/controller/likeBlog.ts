@@ -27,14 +27,43 @@ import apiresponse from "../utils/apiResopnse";
           
           
           if(!likeRes){
+            
             return c.json(
-                new apiresponse(false,400,"like failed")
+              new apiresponse(false,400,"like faliled")
             )
+
           }
+
           return c.json(
-            new apiresponse(true,200,"like success")
+            new apiresponse(true,200,"like success",{for: "like"})
           )
     } catch (error) {
+      //dislike the blog
+      try {
+        const dislikeRes = await prisma.like.delete({
+          where:{
+            userId_blogId: {
+              userId: c.get("userId"),
+              blogId: blogId,
+            },
+          }
+        });
+
+        if(!dislikeRes){
+          return c.json(
+            new apiresponse(false,400,"Dislike failed")
+        )
+        }
+        return c.json(
+          new apiresponse(true,200,"dislike success",{for: "dislike"})
+        )
+  
+      } catch (error) {
+        return c.json(
+        new apiresponse(false,400,"dislike failed")
+      )
+      }
+      
         return c.json(
         new apiresponse(false,400,"like failed")
     )
