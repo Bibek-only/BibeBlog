@@ -51,7 +51,7 @@ async function delay() {
 
         setBlogInfo(res);
         
-        setLikeCount(parseInt(blogInfo._count.likes));
+        setLikeCount(parseInt(res._count));
 
         setShowSkeliton(false)
       }).catch((err)=>{
@@ -67,7 +67,12 @@ async function delay() {
     setShowLoader(true);
     const res = await addLikeService(parseInt(params.blogid!));
     if(res?.success === true){
-      setLikeCount(likeCount+1);
+      if(res.for === "like"){
+        setLikeCount(likeCount+1);
+      }else{
+        setLikeCount(likeCount-1);
+
+      }
     }
     setShowLoader(false);
     btn.disabled = false;
@@ -136,7 +141,7 @@ async function delay() {
           const btn = e.target as HTMLButtonElement;
           btn.disabled = true;
           doLike(btn);
-        }}><AiFillLike />{`${blogInfo._count}`}</button>
+        }}><AiFillLike />{`${likeCount}`}</button>
         
         <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"
         onClick={(e)=>{

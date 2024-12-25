@@ -11,7 +11,7 @@ export default async function addLikeService(id: number){
         });
         console.log(likeRes);
         if(likeRes.data.success === true){
-            return {success: true, msg: "like added"}
+            return {success: true, msg: "like added",for: likeRes.data.data.for}
         }
 
         return {msg: "like failed ",success: false};
