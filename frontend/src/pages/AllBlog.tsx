@@ -111,9 +111,10 @@ const AllBlog = () => {
           allBlog.map((blg:any)=>{
             
               return(
-                <div className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4" id={blg.id}>
+                <div className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4" id={blg.id} key={blg.id}>
             <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
               <div className="title text-xl">{blg.title}</div>
+              <p>Author : {blg.author.fullName}</p>
               <p className="h-24 overflow-hidden w-full text-sm flex items-center">{blg.content}</p>
               <div className="btns flex items-center gap-4">
                 <p className="flex items-center gap-2 "><AiFillLike />{blg._count.likes}</p>

@@ -17,6 +17,7 @@ import savedBlogService from "../services/savedBlogService";
 import unsaveBlogService from "../services/unsaveBlog";
 
 
+
 import toast from 'react-hot-toast';
 
 const ReadBlog = () => {
@@ -49,6 +50,7 @@ async function delay() {
       .then((res)=>{
 
         setBlogInfo(res);
+        
         setLikeCount(parseInt(blogInfo._count.likes));
 
         setShowSkeliton(false)
@@ -127,12 +129,14 @@ async function delay() {
         <img className="w-full h-full object-cover object-center" src={(blogInfo.coverImage)?blogInfo.coverImage:"https://tse2.mm.bing.net/th?id=OIP.NfYZ6yGINT_NzZDDzEwskQHaEK&pid=Api&P=0&w=300&h=300"} alt="" />
       </div>
       <p className="w-full md:px-8 px-4  text-lg font-semibold">{blogInfo.content}</p>
+      <p className="md:px-8 px-4">Published by: {blogInfo.fullName}</p>
       <div className="btns w-full md:px-8 px-4 flex py-6 gap-6">
+        
         <button className="text-lg font-bold flex items-center gap-2 text-indigo-500 hover:text-indigo-600 hover:underline" onClick={(e)=>{
           const btn = e.target as HTMLButtonElement;
           btn.disabled = true;
           doLike(btn);
-        }}><AiFillLike />{blogInfo._count.likes}</button>
+        }}><AiFillLike />{`${blogInfo._count}`}</button>
         
         <button className="text-lg font-bold text-indigo-500 hover:text-indigo-600"
         onClick={(e)=>{

@@ -8,7 +8,7 @@ export default async function getAllBlogService(){
                 Authorization: token,
             }
         })
-        
+        console.log(blogs.data.data)
         return blogs.data.data;
     } catch (error) {
         return []

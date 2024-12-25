@@ -10,10 +10,12 @@ export default async function getBlogInfoService(blogId: any){
                 Authorization: token,
             }
         })
-        return axiosRes.data.data;
+        const data = axiosRes.data.data;
+        console.log("xx",data);
+        return {title: data.title, content: data.content, coverImage:data.coverImage, _count:data._count.likes, fullName:data.author.fullName, userName: data.author.userName, email: data.author.email};
     } catch (error) {
         console.log(error)
-        return {title: null, content: null, coverImage:null, _count:{likes:0}}
+        return {title: null, content: null, coverImage:null, _count:{likes:0}, fullName:null, userName: null, email: null}
     }
     
 }

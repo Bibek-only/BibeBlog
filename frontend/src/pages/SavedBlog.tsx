@@ -84,6 +84,7 @@ const SavedBlog = () => {
               <div  className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4">
             <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
               <div className="title text-xl">{e.blog?.title}</div>
+              <p>Author: {e.blog.author.fullName}</p>
               <p className="h-24 overflow-hidden w-full text-sm flex items-center">{e.blog?.content}</p>
               <div className="btns flex items-center gap-4">
                 {/* <p className="flex items-center gap-2 "><AiFillLike></AiFillLike>100</p> */}
