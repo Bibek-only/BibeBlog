@@ -18,9 +18,19 @@ import apiresponse from "../utils/apiResopnse";
       include: {
         savedBlogs: {
           include: {
-            blog: true, // To fetch the associated blog details
+            blog: {
+              include: {
+                author: { // Include the author of the blog
+                  select: {
+                    userName: true,
+                    fullName: true // Fetch only the author's userName
+                  },
+                },
+              },
+            }, // To fetch the associated blog details
           },
         },
+        
       },
     });
     if (!savedBlogs) {

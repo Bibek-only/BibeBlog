@@ -18,6 +18,14 @@ async function getAllBlogs(c: any) {
         _count: {
           select: { likes: true }, // Count the number of likes for each blog
         },
+        author: {
+          select: { // include the user author information of the user
+            email: true,
+            userName: true,
+            fullName: true,
+          },
+        },
+
       },
     });
     if (!allBlogs) {
