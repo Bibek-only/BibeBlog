@@ -21,6 +21,7 @@ const MyBlog = lazy(() => import("./pages/MyBlog.tsx"));
 const AllBlog = lazy(() => import("./pages/AllBlog.tsx"));
 const ReadBlog = lazy(() => import("./pages/ReadBlog.tsx"));
 const SavedBlog = lazy(()=> import("./pages/SavedBlog.tsx"))
+const Welcome = lazy(()=> import("./pages/Welcome.tsx"))
 
 import SignupSkeliton from "./skelitons/SignupSkeliton.tsx";
 import AllblogSkeliton from "./skelitons/AllblogSkeliton.tsx";
@@ -32,6 +33,14 @@ const router = createBrowserRouter(
     <Route path="/" element={<App></App>}>
       <Route
         path=""
+        element={
+          <Suspense fallback={<AllblogSkeliton></AllblogSkeliton>}>
+            <Welcome></Welcome>
+          </Suspense>
+        }
+      ></Route>
+      <Route
+        path="/home"
         element={
           <Suspense fallback={<AllblogSkeliton></AllblogSkeliton>}>
             <AllBlog></AllBlog>

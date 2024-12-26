@@ -37,7 +37,7 @@ const Signin = () => {
   const navigate = useNavigate();
   function success(){
     setTimeout(()=>{
-      navigate("/")
+      navigate("/home")
     },500)
   }
 

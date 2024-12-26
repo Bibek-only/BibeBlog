@@ -47,7 +47,7 @@ const NavBar = () => {
             {
             (isLogedin===true)? <ul className="flex justify-between text-lg font-bold ">
             <li className="md:px-4 md:py-2 hover:text-indigo-400">
-              <NavLink to=""
+              <NavLink to="/home"
               style={({ isActive}) => {
                 return {
                   color: isActive ? "rgb(79 70 229)" : "rgb(107 114 128)",

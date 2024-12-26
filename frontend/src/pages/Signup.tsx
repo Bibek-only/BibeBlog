@@ -35,7 +35,7 @@ const Signup = () => {
   const navigate = useNavigate();
   function sucess(){
     setTimeout(()=>{
-      navigate("/")
+      navigate("/home")
     },500)
   }
 

@@ -1,13 +1,73 @@
+import styled from 'styled-components';
 
-const Loader = () => {
+const Loader= () => {
   return (
-    <div className='h-screen w-screen z-20 bg-black top-0 fixed opacity-70 flex items-center justify-center'>
-        <div className="box h-12 w-12 rounded-full border-4 border-t-slate-400 border-l-transparent border-r-slate-400 border-b-slate-400 animate-spin [animation-duration:1s]"></div>
-
-
-
-    </div>
-  )
+    <StyledWrapper>
+      <div className="coverup h-screen w-screen fixed  top-0 flex items-center justify-center bg-black opacity-80">
+      <div className="loading ">
+        <span />
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
+      </div>
+    </StyledWrapper>
+  );
 }
 
-export default Loader
+const StyledWrapper = styled.div`
+  .loading {
+   --speed-of-animation: 0.9s;
+   --gap: 6px;
+   --first-color: #4c86f9;
+   --second-color: #49a84c;
+   --third-color: #f6bb02;
+   --fourth-color: #f6bb02;
+   --fifth-color: #2196f3;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 100px;
+   gap: 6px;
+   height: 100px;
+  }
+
+  .loading span {
+   width: 4px;
+   height: 50px;
+   background: var(--first-color);
+   animation: scale var(--speed-of-animation) ease-in-out infinite;
+  }
+
+  .loading span:nth-child(2) {
+   background: var(--second-color);
+   animation-delay: -0.8s;
+  }
+
+  .loading span:nth-child(3) {
+   background: var(--third-color);
+   animation-delay: -0.7s;
+  }
+
+  .loading span:nth-child(4) {
+   background: var(--fourth-color);
+   animation-delay: -0.6s;
+  }
+
+  .loading span:nth-child(5) {
+   background: var(--fifth-color);
+   animation-delay: -0.5s;
+  }
+
+  @keyframes scale {
+   0%, 40%, 100% {
+    transform: scaleY(0.05);
+   }
+
+   20% {
+    transform: scaleY(1);
+   }
+  }`;
+
+export default Loader;
