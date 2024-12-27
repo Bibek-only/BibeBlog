@@ -13,6 +13,8 @@ const NavBar = () => {
 
   const fullName  = useRecoilValue(fullNameAtom);
   
+  
+
 
   //logout function
    function logout(e: React.MouseEvent<HTMLButtonElement>){

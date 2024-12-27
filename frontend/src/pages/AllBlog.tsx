@@ -93,26 +93,16 @@ const AllBlog = () => {
       <>
       
         {(showLoader)?<Loader></Loader>:<></>}
-      <section className="  w-full min-h-screen md:w-9/12 mx-auto">
-        {/* dummy blog card */}
-        {/* <div className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4">
-          <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
-            <div className="title text-xl">hello titile</div>
-            <p className="h-24 overflow-hidden w-full text-sm flex items-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam accusantium quaerat, facilis, ut repudiandae doloribus aliquam, nemo sint porro quae obcaecati rem illum rerum architecto quia qui voluptates! At, perferendis</p>
-            <button className="flex gap-2 items-center" onClick={()=>{
-              alert("maacuda")
-            }}>Read more <FaArrowRight></FaArrowRight></button>
-          </div>
-          <div className="image h-36 w-36 md:h-48 md:w-48 rounded-full bg-slate-500 relative">
-            <img src="https://tse4.mm.bing.net/th?id=OIP.7ITF2gx8_a3s4NbnDOpZzAHaHa&pid=Api&P=0&h=180" alt="blogimg" className="h-full w-full rounded-full object-center object-cover" />
-          </div>
-        </div> */}
-        {
+        <section className="w-full md:px-20 md:w-11/12 m-auto">
+      <div className="  grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 min-h-screen">
+        <div className=" rounded-lg  lg:col-span-2 ">
+          {/* show the blog card here */}
+          {
           allBlog.map((blg:any)=>{
             
               return(
                 <div className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4" id={blg.id} key={blg.id}>
-            <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
+            <div className="content w-96 md:w-2/3  flex flex-col  items-start pl-2 md:pl-0">
               <div className="title text-xl">{blg.title}</div>
               <p>Author : {blg.author.fullName}</p>
               <p className="h-24 overflow-hidden w-full text-sm flex items-center">{blg.content}</p>
@@ -134,7 +124,52 @@ const AllBlog = () => {
             
           })
         }
-      </section>
+          
+        </div>
+        <div className=" rounded-lg md:py-8 ">
+          <div className=" user-card flex items-center space-x-4 p-3   rounded-lg transition-all duration-500 hover:border-white border border-transparent mb-2">
+            <img
+              src="https://i.pravatar.cc/100?img=1"
+              alt="Sarah Johnson"
+              className="w-12 h-12 rounded-full border-2 border-indigo-800 dark:border-blue-900"
+            />
+            <div className="">
+              <h3 className="text-lg font-semibold text-indigo-800 dark:text-white">
+                Bibek samal
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                bibekbibek966@gmail.com
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Followers: 50
+              </p>
+              
+            </div>
+          </div>
+          <div className=" user-card flex items-center space-x-4 p-3   rounded-lg transition-all duration-500 hover:border-white border border-transparent mb-2">
+            <img
+              src="https://i.pravatar.cc/100?img=1"
+              alt="Sarah Johnson"
+              className="w-12 h-12 rounded-full border-2 border-indigo-800 dark:border-blue-900"
+            />
+            <div className="">
+              <h3 className="text-lg font-semibold text-indigo-800 dark:text-white">
+                Bibek samal
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                bibekbibek966@gmail.com
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Followers: 50
+              </p>
+              
+            </div>
+          </div>
+          
+          
+        </div>
+      </div>
+    </section>
       </>
     )
   }
