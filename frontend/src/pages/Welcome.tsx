@@ -1,23 +1,24 @@
 import { isLogedinAtom } from "../store/atom/isloginatom";
 import { useEffect, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import Loader from '../skelitons/Loader'
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilStateLoadable, useSetRecoilState } from "recoil";
 import { enableClick, disableClick } from "../services/clickDesEnb";
+
+import {logedinUserInfoAtom} from "../store/atom/userInfoAtom";
 
 //animation import
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { getUserInfoService } from "../services/getUserInfoService";
+import { loadingAtom } from "../store/atom/loadingAtom";
+import delay from "../services/delay";
 
 const Welcome = () => {
-    //delay
-    async function delay(){
-        return new Promise((res,rej)=>{
-            setTimeout(()=>{
-                res("done")
-            },1500)
-        })
-    }
+    const [logedinUserInfo,setLogedinUserInfo] = useRecoilStateLoadable(logedinUserInfoAtom);
+    
+
+    
 
     //animatio configuration
     useEffect(() => {
@@ -28,39 +29,51 @@ const Welcome = () => {
         });
       }, []);
 
-    const [loading, setLoading] = useState(false);
+
+
+    const [loading, setLoading] = useRecoilState(loadingAtom)
 
     const navigate = useNavigate();
-    const setIsLogedin = useSetRecoilState(isLogedinAtom);
+    const [logedin,setIsLogedin] = useRecoilState(isLogedinAtom);
+
 
     useEffect(()=>{
         if(localStorage.getItem("token")){
             setIsLogedin(true)
-            disableClick(); //disable click
-            delay()
-            .then((res)=>{
-                setLoading(true);
-                return delay();
-            })
-            .then((res2)=>{
-                enableClick(); //enable click
-                navigate("/home")
-            })
+            
+            //based on conditaion set the userinfo
+            if(logedinUserInfo.state === "hasValue" && logedinUserInfo.contents === null){
+                
+                    getUserInfoService()
+                    .then( (res)=>{
+                        setLogedinUserInfo(res);
+                    })
+                
+            }
+
+            
+
+            
             
         }else{
-            setIsLogedin(false)
+            setLogedinUserInfo(null);
+            setIsLogedin(false);
+            
+            
+            
         }
     },[])
 
-    async function gotoAuth(btn: HTMLButtonElement, path:string){ //goto the signup page
-        btn.disabled = true;
-        disableClick(); //disable click
+    async function gotoAuth(){ //goto the signup page
         
+        disableClick(); //disable click
         setLoading(true);
         await delay();
+        setLoading(false)
         enableClick(); //enable click
-        navigate(path)
+        navigate("/signup")
         return;
+        
         
     }
     
@@ -78,11 +91,15 @@ const Welcome = () => {
 
                     <button data-aos="fade-up"  className="inline-flex items-center px-6 py-4 mt-8 font-semibold text-white transition-all duration-200 bg-indigo-500 rounded-full lg:mt-16 hover:bg-indigo-600 focus:bg-indigo-600" 
                     onClick={(e)=>{
-                        const btn = e.target as HTMLButtonElement;
-                        gotoAuth(btn,"/signup");
+                        
+                        if(logedin === true){
+                            navigate("/home")
+                        }else{
+                            gotoAuth();
+                        }
                     }}
                     >
-                        Join now
+                        {logedin?"Home":"Register"}
                         <svg className="w-6 h-6 ml-8 -mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>

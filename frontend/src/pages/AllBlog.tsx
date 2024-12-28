@@ -1,90 +1,85 @@
-import { useEffect,useState } from "react";
-import { isLogedinAtom } from "../store/atom/isloginatom";
+import { useEffect, } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+
+import {  useRecoilValue, useRecoilValueLoadable, useSetRecoilState ,useRecoilStateLoadable} from "recoil";
+
 import AllblogSkeliton from "../skelitons/AllblogSkeliton";
 import Loader from "../skelitons/Loader";
-import getAllBlogService from "../services/getAllBlogService";
+
+import { isLogedinAtom } from "../store/atom/isloginatom";
 import { allBlogAtom } from "../store/atom/allBlogAtom";
+import { allUserAtom } from "../store/atom/allUserAtom";
+import { loadingAtom } from "../store/atom/loadingAtom";
+import { logedinUserInfoAtom } from "../store/atom/userInfoAtom";
 
 
-import { fullNameAtom } from "../store/atom/userInfoAtom";
+
+
 import { getUserInfoService } from "../services/getUserInfoService";
+
+import delay from "../services/delay";
+
+//buttondisabler
+import { disableClick, enableClick } from "../services/clickDesEnb";
 
 import { FaArrowRight } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
 
+
+
 const AllBlog = () => {
   const setIsLogedin = useSetRecoilState(isLogedinAtom);
-  const setfullName = useSetRecoilState(fullNameAtom);
-  const [allBlog,setAllBlog] = useRecoilState(allBlogAtom);
-  const [showLoader, setShowLoader] = useState(false);
-  const [showSkeliton, setShowSkeliton] = useState(true);
+  const showLoader = useRecoilValue(loadingAtom);
+  
   const navigate = useNavigate();
+  
+  //fetch all user
+  const [allUsers,setAllUsers] = useRecoilStateLoadable(allUserAtom);
+  //fetch all blog
+  const [allBlogs,setAllBlogs] = useRecoilStateLoadable(allBlogAtom);
+  
+  //fetch the user information
+  const [logedinUserInfo,setLogedinUserInfo] = useRecoilStateLoadable(logedinUserInfoAtom);
 
-  async function delay() {
-    await new Promise((res, rej) => {
-      setTimeout(() => {
-        res("delay resolved");
-      }, 500);
-    });
-  }
-
-  //set the user is loged in or not
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setIsLogedin(true);
-      //set the use information
-      getUserInfoService()
-        .then((res) => {
-          
-          if(res){
-            setfullName(res);
-          }else{
-            setfullName("")
-          }
-          
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-        //set userblogs
-        getAllBlogService()
-        .then(async (res)=>{
-          setAllBlog(res);
-          setShowSkeliton(false);
-        })
-        .catch((err)=>{
-          console.log("some error in the get blog service")
-          setAllBlog([])
-          setShowSkeliton(true);
-        })
-    } else {
-      document.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevent the event from propagating
-        event.preventDefault();  // Prevent the default action
-        console.log("Mouse click blocked!");
-      });
-      (async () => {
-        setShowLoader(true);
-        await delay();
-        setShowLoader(false);
-        navigate("/signin");
-      })();
-      setIsLogedin(false);
-    }
-  }, []);
-
-  async function readblog(e:any){
-    setShowLoader(true);
-    await delay();
-    setShowLoader(false)
-    navigate(`/read-blog/${e}`);
-  }
 
   
-  if(showSkeliton){
+
+  //set the user is loged in or not
+  useEffect(()=>{
+    if(localStorage.getItem("token")){
+        setIsLogedin(true)
+        
+        //based on conditaion set the userinfo
+        if(logedinUserInfo.state === "hasValue" && logedinUserInfo.contents === null){
+            
+                getUserInfoService()
+                .then( (res)=>{
+                    setLogedinUserInfo(res);
+                })
+            
+        }
+
+        //set the new updated blog
+        
+
+        
+
+        
+        
+    }else{
+        setLogedinUserInfo(null);
+        setIsLogedin(false);
+        navigate("/")
+        
+        
+        
+    }
+},[])
+
+  
+
+  
+  if(allBlogs.state === "loading" || allUsers.state === "loading"){
     return(
       <AllblogSkeliton></AllblogSkeliton>
     )
@@ -94,77 +89,16 @@ const AllBlog = () => {
       
         {(showLoader)?<Loader></Loader>:<></>}
         <section className="w-full md:px-20 md:w-11/12 m-auto">
-      <div className="  grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 min-h-screen">
-        <div className=" rounded-lg  lg:col-span-2 ">
+      <div className="  grid grid-cols-1 lg:grid-cols-3  min-h-screen">
+        <div className="   lg:col-span-2 border-l border-l-[#6B7280] md:px-4">
           {/* show the blog card here */}
-          {
-          allBlog.map((blg:any)=>{
-            
-              return(
-                <div className="blog  border-b h-80 flex flex-col-reverse justify-around items-center  md:flex-row mb-4" id={blg.id} key={blg.id}>
-            <div className="content w-96 md:w-2/3  flex flex-col  items-start pl-2 md:pl-0">
-              <div className="title text-xl">{blg.title}</div>
-              <p>Author : {blg.author.fullName}</p>
-              <p className="h-24 overflow-hidden w-full text-sm flex items-center">{blg.content}</p>
-              <div className="btns flex items-center gap-4">
-                <p className="flex items-center gap-2 "><AiFillLike />{blg._count.likes}</p>
-              <button className="flex gap-2 items-center text-indigo-500 hover:text-indigo-600 hover:underline" onClick={(event)=>{
-                const btnTarget =  event.target as HTMLButtonElement;
-                btnTarget.disabled = true; //disabled the button
-  
-                readblog(blg.id);
-              }}>Read more <FaArrowRight></FaArrowRight></button>
-              </div>
-            </div>
-            <div className="image h-36 w-36 md:h-48 md:w-48 rounded-full bg-slate-500 relative">
-              <img src="https://tse4.mm.bing.net/th?id=OIP.7ITF2gx8_a3s4NbnDOpZzAHaHa&pid=Api&P=0&h=180" alt="blogimg" className="h-full w-full rounded-full object-center object-cover" />
-            </div>
-          </div>
-              )
-            
-          })
-        }
+          <BlogCards></BlogCards>
           
         </div>
-        <div className=" rounded-lg md:py-8 ">
-          <div className=" user-card flex items-center space-x-4 p-3   rounded-lg transition-all duration-500 hover:border-white border border-transparent mb-2">
-            <img
-              src="https://i.pravatar.cc/100?img=1"
-              alt="Sarah Johnson"
-              className="w-12 h-12 rounded-full border-2 border-indigo-800 dark:border-blue-900"
-            />
-            <div className="">
-              <h3 className="text-lg font-semibold text-indigo-800 dark:text-white">
-                Bibek samal
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                bibekbibek966@gmail.com
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Followers: 50
-              </p>
-              
-            </div>
-          </div>
-          <div className=" user-card flex items-center space-x-4 p-3   rounded-lg transition-all duration-500 hover:border-white border border-transparent mb-2">
-            <img
-              src="https://i.pravatar.cc/100?img=1"
-              alt="Sarah Johnson"
-              className="w-12 h-12 rounded-full border-2 border-indigo-800 dark:border-blue-900"
-            />
-            <div className="">
-              <h3 className="text-lg font-semibold text-indigo-800 dark:text-white">
-                Bibek samal
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                bibekbibek966@gmail.com
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Followers: 50
-              </p>
-              
-            </div>
-          </div>
+        <div className="md:py-8 border-x border-x-[#6B7280] md:px-2">
+
+          {/* display all the user present in the server */}
+          <UserCards></UserCards>
           
           
         </div>
@@ -180,3 +114,104 @@ const AllBlog = () => {
 };
 
 export default AllBlog;
+
+function UserCards(){
+  const allUser = useRecoilValueLoadable(allUserAtom);
+  
+  if(allUser.state === "hasValue"){
+    console.log(allUser.contents)
+    return(
+      <div>
+        {
+          allUser.contents.map((e:any)=>{
+            return(
+              <div className=" user-card flex items-center space-x-4 p-3   rounded-lg transition-all duration-500 hover:border-[#6B7280] border border-transparent mb-2">
+            <img
+              src="https://i.pravatar.cc/100?img=1"
+              alt="Sarah Johnson"
+              className="w-12 h-12 rounded-full border-2 border-indigo-800 dark:border-blue-900"
+            />
+            <div className="">
+              <h3 className="text-lg font-semibold text-indigo-800 dark:text-white">
+                {e.fullName}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+               {e.email}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Followers: {e._count.followers}
+              </p>
+              
+            </div>
+          </div>
+            )
+          })
+        }
+      </div>
+    )
+  }else{
+    return <></>
+  }
+}
+
+function BlogCards(){
+  const allBlogs = useRecoilValueLoadable(allBlogAtom);
+  if(allBlogs.state === "hasValue"){
+    
+    return(
+
+      <div>
+        {
+          allBlogs.contents.map((blg:any)=>{
+            
+            return(
+              
+              <div className="blog border-b border-b-[#6B7280] h-72 flex flex-col-reverse justify-around items-center  md:flex-row mb-4" id={blg.id} key={blg.id}>
+          <div className="content w-96 md:w-2/3  flex flex-col  items-start pl-2 md:pl-0">
+            <div className="title text-xl">{blg.title}</div>
+            <p>Author : {blg.author.fullName}</p>
+            <p className="hidden  h-24 overflow-hidden w-full text-sm md:flex items-center">{blg.content}</p>
+            <div className="btns flex items-center gap-4">
+              <p className="flex items-center gap-2 "><AiFillLike />{blg._count.likes}</p>
+            
+            <ReadBlog prop={{id:blg.id}} />
+            </div>
+          </div>
+          <div className="image h-36 w-full md:h-48 md:w-48 md:rounded-full bg-slate-500 relative">
+            <img src={blg.coverImage} alt="blogimg" className="h-full w-full md:rounded-full object-center object-cover" />
+          </div>
+        </div>
+            )
+          
+        })
+        }
+      </div>
+
+    )
+  }else{
+    return <></>
+  }
+}
+
+function ReadBlog({prop}:any){
+  const navigate = useNavigate();
+  const setShowLoader = useSetRecoilState(loadingAtom);
+  
+  return(
+    <button className="flex gap-2 items-center text-indigo-500 hover:text-indigo-600 hover:underline"
+     onClick={async ()=>{
+      disableClick(); //disable the click
+     setShowLoader(true);
+      await delay(); //delay for 1500 second
+      enableClick(); //enable the click
+      setShowLoader(false);
+
+      //navigate to the read blog section
+      navigate(`/read-blog/${prop.id}`)
+     
+     }}
+     >
+      Read more <FaArrowRight></FaArrowRight></button>
+    
+  )
+}

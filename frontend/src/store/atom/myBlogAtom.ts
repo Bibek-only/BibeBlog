@@ -1,5 +1,12 @@
-import {atom} from 'recoil';
+import {atom, selector} from 'recoil';
+import getMyBlogService from '../../services/getMyblogService';
 export const myBlogAtom = atom({
     key: "myBlogAtom",
-    default: [{id:"",title:"",content:"",coverImage:""}]
+    default: selector({
+        key: "myblogselector",
+        get:async ()=>{
+            const res = await getMyBlogService();
+            return res;
+        }
+    })
 })

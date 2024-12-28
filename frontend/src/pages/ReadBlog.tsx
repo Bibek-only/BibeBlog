@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilStateLoadable, useSetRecoilState } from "recoil";
 import { isLogedinAtom } from "../store/atom/isloginatom";
 import { useNavigate, useParams } from "react-router-dom";
 import getBlogInfoService from "../services/getBlogInfo";
@@ -17,8 +17,12 @@ import savedBlogService from "../services/savedBlogService";
 import unsaveBlogService from "../services/unsaveBlog";
 
 
+import { allBlogAtom } from "../store/atom/allBlogAtom";
 
 import toast from 'react-hot-toast';
+import getAllBlogService from "../services/getAllBlogService";
+import getMyBlogService from "../services/getMyblogService";
+import { myBlogAtom } from "../store/atom/myBlogAtom";
 
 const ReadBlog = () => {
   const [showLoader, setShowLoader] = useState(false);
@@ -29,7 +33,9 @@ const ReadBlog = () => {
 const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
 const [likeCount, setLikeCount] = useState(0);
 
-
+//update the all blog if do like or dislike
+const setAllBlogs = useSetRecoilState(allBlogAtom);
+const setMyBlogs = useSetRecoilState(myBlogAtom)
 const navigate = useNavigate();
 
 async function delay() {
@@ -68,8 +74,31 @@ async function delay() {
     const res = await addLikeService(parseInt(params.blogid!));
     if(res?.success === true){
       if(res.for === "like"){
+
+        //update the all blog
+        getAllBlogService()
+        .then((res)=>{
+          setAllBlogs(res);
+        })
+
+        //update my blog if make like
+        getMyBlogService()
+        .then((res)=>{
+          setMyBlogs(res)
+        })
+        
         setLikeCount(likeCount+1);
       }else{
+        //update the all blog
+        getAllBlogService()
+        .then((res)=>{
+          setAllBlogs(res);
+        })
+        //update my blog if make like
+        getMyBlogService()
+        .then((res)=>{
+          setMyBlogs(res)
+        })
         setLikeCount(likeCount-1);
 
       }

@@ -8,8 +8,12 @@ export default async function getAllBlogService(){
                 Authorization: token,
             }
         })
-        console.log(blogs.data.data)
-        return blogs.data.data;
+        if(blogs.data.success === true){
+            return blogs.data.data;
+
+        }else{
+            return []
+        }
     } catch (error) {
         return []
     }

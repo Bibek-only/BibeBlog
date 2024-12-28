@@ -1,5 +1,5 @@
 import { atom } from "recoil";
 export const isLogedinAtom = atom({
     key: 'isLogedinAtom',
-    default: false
+    default: (localStorage.getItem("token"))? true: false
 })

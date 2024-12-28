@@ -3,7 +3,7 @@ import axios from "axios";
 export async function getUserInfoService(){
     const token = localStorage.getItem('token')?.split(" ")[1];
     if(!token){
-      return "unknown"
+      return null
     }
     else{
 
@@ -13,14 +13,14 @@ export async function getUserInfoService(){
                 Authorization:token
               },
             })
-          if(axiosRes){
-            return axiosRes.data.data.fullName;
+          if(axiosRes.data.success === true){
+            return axiosRes.data.data;
           }
-          return "Unknown"
+          return null
       } catch (error) {
           console.log("error in getuserInfo service")
           console.log(error)
-          return "Unknown"
+          return null
       }
     }
 

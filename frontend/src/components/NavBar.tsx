@@ -2,33 +2,40 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { isLogedinAtom } from "../store/atom/isloginatom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
-import { fullNameAtom } from "../store/atom/userInfoAtom";
-import { useRecoilValue } from "recoil";
+import { logedinUserInfoAtom } from "../store/atom/userInfoAtom";
+
+import { useRecoilStateLoadable } from "recoil";
+import delay from "../services/delay";
+import { disableClick, enableClick } from "../services/clickDesEnb";
+import { loadingAtom } from "../store/atom/loadingAtom";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const [isLogedin,setIsLogedin] = useRecoilState(isLogedinAtom);
 
-  const fullName  = useRecoilValue(fullNameAtom);
-  
+  const [userinfo,setUserinfo] =  useRecoilStateLoadable(logedinUserInfoAtom);
+  const setLoading = useSetRecoilState(loadingAtom);
   
 
 
   //logout function
-   function logout(e: React.MouseEvent<HTMLButtonElement>){
-  const button = e.target as HTMLButtonElement;
-  button.disabled = true;
-  toast.error("logging out",{
-    duration: 500
-  })
-  setTimeout(()=>{
-    localStorage.removeItem('token')
-    setIsLogedin(false)
-    navigate("/signup")
-  },500)
-  }
+async  function logout(e: React.MouseEvent<HTMLButtonElement>){
+  toast.error("logout the user")
+  disableClick(); //disable the click
+  setLoading(true);
+  await delay();
+  localStorage.removeItem("token");
+  setUserinfo(null)
+  setLoading(false);
+  enableClick();
+  navigate("/signin")
+
+
+  
+  
+}
 
   
 
@@ -96,9 +103,9 @@ const NavBar = () => {
           }
           
         </div>
-        <div className="order-2 md:order-3">
+        <div className="order-2 md:order-3 md:w-60  flex items-center justify-center">
           {
-            (isLogedin === true)?<div className="profile  flex items-center"><div className="px-2 text-xl text-gray-500 font-bold cursor-pointer hover:text-indigo-600 duration-200 hover:underline">{fullName}</div><div className="img cursor-pointer h-12 w-12 rounded-full bg-[#16181c] text-indigo-500 hover:text-indigo-600 flex items-center justify-center text-2xl font-bold">{fullName[0]}</div></div>:<NavLink to="/signin" className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2 font-bold">
+            (isLogedin)?<div className="profile  flex items-center"><div className="px-2 text-xl text-gray-500 font-bold cursor-pointer hover:text-indigo-600 duration-200 hover:underline">{(userinfo.contents === null)?"":userinfo.contents.fullName}</div><div className="img border cursor-pointer h-12 w-12 rounded-full bg-[#16181c] text-indigo-500 hover:text-indigo-600 flex items-center justify-center text-2xl font-bold">{ (userinfo.contents == null)?"":<img src={userinfo.contents. profilePhoto} className="h-12 w-12 object-center object-cover rounded-full" alt=""/>}</div></div>:<NavLink to="/signin" className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2 font-bold">
             Log in
           </NavLink>
           }

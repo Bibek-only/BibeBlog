@@ -14,12 +14,13 @@ export default async function getMyBlogService(){
         }
     })
 
-    if(myBlog){
+    if(myBlog.data.success === true){
         return myBlog.data.data;
     }else{
         return []
     }
    } catch (error) {
+    console.log("error at my blog service",error)
     return []
    }
 

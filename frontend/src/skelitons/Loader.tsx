@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Loader= () => {
   return (
     <StyledWrapper>
-      <div className="coverup h-screen w-screen fixed  top-0 flex items-center justify-center bg-black opacity-80">
+      <div className="coverup h-screen w-screen fixed  top-0 flex items-center justify-center bg-black opacity-80 z-50">
       <div className="loading ">
         <span />
         <span />
