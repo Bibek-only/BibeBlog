@@ -10,6 +10,11 @@ import { useRecoilStateLoadable } from "recoil";
 import delay from "../services/delay";
 import { disableClick, enableClick } from "../services/clickDesEnb";
 import { loadingAtom } from "../store/atom/loadingAtom";
+import { allBlogAtom } from "../store/atom/allBlogAtom";
+import { savedBlogAtom } from "../store/atom/savedBlogAtom";
+import { myBlogAtom } from "../store/atom/myBlogAtom";
+
+
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -18,18 +23,23 @@ const NavBar = () => {
   const [userinfo,setUserinfo] =  useRecoilStateLoadable(logedinUserInfoAtom);
   const setLoading = useSetRecoilState(loadingAtom);
   
-
+const setAllBlogs = useSetRecoilState(allBlogAtom);
+const setSavedBlogs = useSetRecoilState(savedBlogAtom);
+const setMyBlogs = useSetRecoilState(myBlogAtom);
 
   //logout function
 async  function logout(e: React.MouseEvent<HTMLButtonElement>){
   toast.error("logout the user")
-  disableClick(); //disable the click
   setLoading(true);
+  disableClick(); //disable the click
   await delay();
   localStorage.removeItem("token");
   setUserinfo(null)
-  setLoading(false);
+  setAllBlogs([]);
+  setMyBlogs([]);
+  setSavedBlogs([])
   enableClick();
+  setLoading(false);
   navigate("/signin")
 
 

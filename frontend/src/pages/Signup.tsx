@@ -9,7 +9,7 @@ import { FaGoogle } from "react-icons/fa";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
 import { signupService } from "../services/signupService";
-import { signupType } from "@bibek-samal/bibeblog-common";
+import { signupTypeFrontend } from "@bibek-samal/bibeblog-common";
 
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -44,10 +44,10 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors,isSubmitting },
-  } = useForm<signupType>();
+  } = useForm<signupTypeFrontend>();
 
   //handel submition of form
-  const onSubmit: SubmitHandler<signupType> = async (data) => {
+  const onSubmit: SubmitHandler<signupTypeFrontend> = async (data) => {
     const signupRes = await signupService(data);
     if(signupRes?.success === true){
       toast.success("User created sucess fully")
@@ -193,6 +193,40 @@ const Signup = () => {
               </div>
             </div>
           </div>
+          <div className="file-upload">
+          <label htmlFor="file-up" id="coverImg" className="bg-indigo-500 hover:bg-indigo-600 text-lg  w- py-1 rounded-lg  text-gray-300 hover:text-white max-lg:ml-2 max-lg:text-xl flex justify-center w-44 " >profile picture</label>
+          <input type="file" id="file-up" className="hidden" 
+         
+          {...register("ProfilePhoto", { 
+           
+            required:{
+              value: true,
+              message: "Profile Image must Required"
+            },
+            validate: {
+              fileType: (value:any) => {
+                const file = value[0];
+                return (
+                  file &&
+                  (file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg") ||
+                  "Only .jpg/.jpeg or .png files are allowed"
+                );
+              },
+              fileSize: (value:any) => {
+                
+                const file = value[0];
+                return (
+                  file && file.size <= 2 * 1024 * 1024 ||
+                  "File size must be under 2MB"
+                );
+              },
+           }})}
+           
+          />
+          <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 ">
+                {errors.ProfilePhoto && errors.ProfilePhoto?.message}
+              </div>
+        </div>
 
           {/* button for signup */}
           <label htmlFor="sub w-full">

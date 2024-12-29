@@ -129,8 +129,8 @@ function UserCards(){
             return(
               <div className=" user-card flex items-center space-x-4 p-3   rounded-lg transition-all duration-500 hover:border-[#6B7280] border border-transparent mb-2">
             <img
-              src="https://i.pravatar.cc/100?img=1"
-              alt="Sarah Johnson"
+              src={e.profilePhoto}
+              
               className="w-12 h-12 rounded-full border-2 border-indigo-800 dark:border-blue-900"
             />
             <div className="">

@@ -1,9 +1,20 @@
-import { signupType } from "@bibek-samal/bibeblog-common"
+import {signupTypeFrontend } from "@bibek-samal/bibeblog-common"
 import axios from "axios";
-export async function signupService(obj:signupType){
+export async function signupService(obj:signupTypeFrontend){
+
+    const {email,userName,fullName,password} = obj;
+    const image:any = obj.ProfilePhoto;
+    const formData = new FormData();
+    formData.append("email",email);
+    formData.append("userName",userName);
+    formData.append("fullName",fullName);
+    formData.append("password", password);
+    formData.append("ProfilePhoto",image[0]); //add file
     
+    
+
    try {
-    const signupRes = await axios.post("/api/v1/user/signup",obj)
+    const signupRes = await axios.post("/api/v1/user/signup",formData);
     if(signupRes.data.success === true){
         //set the token in localstorage
         localStorage.setItem('token',`bearer ${signupRes.data.data.token}`)
