@@ -27,6 +27,8 @@ import SignupSkeliton from "./skelitons/SignupSkeliton.tsx";
 import AllblogSkeliton from "./skelitons/AllblogSkeliton.tsx";
 import CreateSkeliton from "./skelitons/CreateSkeliton.tsx";
 import ReadblogSkeliton from "./skelitons/ReadblogSkeliton.tsx";
+import Loader from "./skelitons/Loader.tsx";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,7 +36,7 @@ const router = createBrowserRouter(
       <Route
         path=""
         element={
-          <Suspense fallback={<AllblogSkeliton></AllblogSkeliton>}>
+          <Suspense fallback={<Loader></Loader>}>
             <Welcome></Welcome>
           </Suspense>
         }

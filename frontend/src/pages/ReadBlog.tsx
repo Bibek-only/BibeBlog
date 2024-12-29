@@ -23,6 +23,7 @@ import toast from 'react-hot-toast';
 import getAllBlogService from "../services/getAllBlogService";
 import getMyBlogService from "../services/getMyblogService";
 import { myBlogAtom } from "../store/atom/myBlogAtom";
+import { savedBlogAtom } from "../store/atom/savedBlogAtom";
 
 const ReadBlog = () => {
   const [showLoader, setShowLoader] = useState(false);
@@ -33,9 +34,10 @@ const ReadBlog = () => {
 const [blogInfo, setBlogInfo] = useRecoilState(blogAtom);
 const [likeCount, setLikeCount] = useState(0);
 
-//update the all blog if do like or dislike
+//update the all blog if do like or dislike or save or unsave
 const setAllBlogs = useSetRecoilState(allBlogAtom);
 const setMyBlogs = useSetRecoilState(myBlogAtom)
+const setSavedBlogs = useSetRecoilState(savedBlogAtom)
 const navigate = useNavigate();
 
 async function delay() {

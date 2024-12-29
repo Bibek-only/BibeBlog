@@ -3,7 +3,7 @@ import { isLogedinAtom } from "../store/atom/isloginatom";
 import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { getUserInfoService } from "../services/getUserInfoService";
-import { fullNameAtom } from "../store/atom/userInfoAtom";
+
 import createBlogService from "../services/createBlogService";
 import toast from 'react-hot-toast';
 import Loader from "../skelitons/Loader";
@@ -11,16 +11,27 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import { createBlogTypeFrontend } from "@bibek-samal/bibeblog-common";
 
+import { useRecoilStateLoadable } from "recoil";
+
+import { logedinUserInfoAtom } from "../store/atom/userInfoAtom";
+import { myBlogAtom } from "../store/atom/myBlogAtom";
+
+import getMyBlogService from "../services/getMyblogService";
+import { disableClick, enableClick } from "../services/clickDesEnb";
 
 
 const CreateBlog = () => {
   const navigate = useNavigate();
   const setIsLogedin = useSetRecoilState(isLogedinAtom);
 
-  const [imageName,setImageName] = useState("");
+ 
   
-  const setfullName = useSetRecoilState(fullNameAtom);
-  
+  //fetch the user information
+    const [logedinUserInfo,setLogedinUserInfo] = useRecoilStateLoadable(logedinUserInfoAtom);
+    
+  //update the my blog if create a blog
+  const setMyBlogs = useSetRecoilState(myBlogAtom);
+
 
   //handel the create blog
   const {
@@ -29,39 +40,53 @@ const CreateBlog = () => {
     formState: { errors,isSubmitting },
   } = useForm<createBlogTypeFrontend>();
 
-  function success(){
-    setTimeout(()=>{
-      navigate("/my-blog")
-    },500)
-  }
+  
   
   //set the user is loged in or not
   useEffect(()=>{
-    //set user details 
-    
-      if(localStorage.getItem('token')){
-      setIsLogedin(true)
-      getUserInfoService()
-          .then((res) => {
+    if(localStorage.getItem("token")){
+        setIsLogedin(true)
+        
+        //based on conditaion set the userinfo
+        if(logedinUserInfo.state === "hasValue" && logedinUserInfo.contents === null){
             
-            setfullName(res);
-           
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+                getUserInfoService()
+                .then( (res)=>{
+                    setLogedinUserInfo(res);
+                })
+            
+        }
+
+        //set the new updated blog
+        
+
+        
+
+        
+        
     }else{
-      setIsLogedin(false)
-      navigate("/signup")
+        setLogedinUserInfo(null);
+        setIsLogedin(false);
+        navigate("/")
+        
+        
+        
     }
-  },[])
+},[])
   
   //handel submition of form
   const onSubmit: SubmitHandler<createBlogTypeFrontend> = async (data) => {
+    
+    disableClick(); //disable any click
     const createBlogRes = await createBlogService(data);
     if(createBlogRes?.success === true){
       toast.success("Blog created successfully")
-      success();
+      getMyBlogService()
+      .then((res)=>{
+        setMyBlogs(res);
+        enableClick(); //enable the click
+        navigate("/my-blog")
+      })
     }
     
 
@@ -146,7 +171,6 @@ const CreateBlog = () => {
               fileSize: (value:any) => {
                 
                 const file = value[0];
-                setImageName(file.name)
                 return (
                   file && file.size <= 2 * 1024 * 1024 ||
                   "File size must be under 2MB"
@@ -160,7 +184,6 @@ const CreateBlog = () => {
       <button className="bg-indigo-500 hover:bg-indigo-600 text-lg  py-2 rounded-2xl font-bold text-gray-300 hover:text-white max-lg:ml-2 max-lg:text-xl w-52" name="subbmit">Create</button></label>
       <input type="submit" id='sub' name='sub' className="hidden" disabled={isSubmitting}/>
       </div>
-      <p className="pl-4">Selected File: {imageName}</p>
       <div className="error bg-black h-6 font-thin text-red-400 pl-6 duration-500 ">
                 {errors.coverImage && errors.coverImage?.message}
               </div>

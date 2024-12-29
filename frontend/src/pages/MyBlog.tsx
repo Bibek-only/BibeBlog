@@ -71,6 +71,7 @@ const MyBlog = () => {
       <>
       {(showLoader)? <Loader /> : <></>}
       <section className="w-full min-h-screen md:w-9/12 mx-auto border-x border-x-[#6B7280] md:px-8">
+      <h1 className="px-4 text-xl font-bold text-indigo-500 underline">My blog's</h1>
         <BlogCards></BlogCards>
         
       </section>

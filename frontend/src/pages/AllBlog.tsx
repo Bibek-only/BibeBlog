@@ -87,17 +87,19 @@ const AllBlog = () => {
     return(
       <>
       
-        {(showLoader)?<Loader></Loader>:<></>}
+        {showLoader && <Loader></Loader>}
         <section className="w-full md:px-20 md:w-11/12 m-auto">
       <div className="  grid grid-cols-1 lg:grid-cols-3  min-h-screen">
         <div className="   lg:col-span-2 border-l border-l-[#6B7280] md:px-4">
           {/* show the blog card here */}
+          <h1 className="px-4 text-xl font-bold text-indigo-500 underline">Blog's</h1>
           <BlogCards></BlogCards>
           
         </div>
-        <div className="md:py-8 border-x border-x-[#6B7280] md:px-2">
+        <div className="md:py- border-x border-x-[#6B7280] md:px-2">
 
           {/* display all the user present in the server */}
+          <h1 className="px-4 text-xl font-bold text-indigo-500 underline">Creator's</h1>
           <UserCards></UserCards>
           
           
@@ -118,8 +120,8 @@ export default AllBlog;
 function UserCards(){
   const allUser = useRecoilValueLoadable(allUserAtom);
   
-  if(allUser.state === "hasValue"){
-    console.log(allUser.contents)
+  if(allUser.state === "hasValue" && allUser.contents.length != 0){
+    console.log("the full name = ",allUser.contents)
     return(
       <div>
         {
@@ -156,8 +158,8 @@ function UserCards(){
 
 function BlogCards(){
   const allBlogs = useRecoilValueLoadable(allBlogAtom);
-  if(allBlogs.state === "hasValue"){
-    
+  if(allBlogs.state === "hasValue"  && allBlogs.contents.length !=0 ){
+    console.log("----",allBlogs.contents);
     return(
 
       <div>
@@ -169,7 +171,7 @@ function BlogCards(){
               <div className="blog border-b border-b-[#6B7280] h-72 flex flex-col-reverse justify-around items-center  md:flex-row mb-4" id={blg.id} key={blg.id}>
           <div className="content w-96 md:w-2/3  flex flex-col  items-start pl-2 md:pl-0">
             <div className="title text-xl">{blg.title}</div>
-            <p>Author : {blg.author.fullName}</p>
+            <p>Author : {blg.author?.fullName}</p>
             <p className="hidden  h-24 overflow-hidden w-full text-sm md:flex items-center">{blg.content}</p>
             <div className="btns flex items-center gap-4">
               <p className="flex items-center gap-2 "><AiFillLike />{blg._count.likes}</p>

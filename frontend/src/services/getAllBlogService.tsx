@@ -15,6 +15,7 @@ export default async function getAllBlogService(){
             return []
         }
     } catch (error) {
+        console.log("error at get all blog service")
         return []
     }
    
