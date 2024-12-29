@@ -9,7 +9,7 @@ async function createBlog(c: any) {
 
   //validate the data
   const bodyData:createBlogTypeFrontend = await c.req.parseBody();
-  console.log(bodyData.coverImage)
+  
   const validation = createBlogSchemaFrontend.safeParse(bodyData);
   
   if(! validation.success){

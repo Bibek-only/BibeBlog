@@ -19,6 +19,14 @@ async function getUserInformation(c: any) {
         email: true,
         fullName: true,
         userName: true,
+        profilePhoto: true,
+        _count:{
+          select:{
+              followers: true,
+              blogs: true
+          }
+      }
+
       },
     });
 
