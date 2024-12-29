@@ -19,6 +19,26 @@ export declare const singupSchema: z.ZodObject<{
     profilePhoto?: string | undefined;
 }>;
 export type signupType = z.infer<typeof singupSchema>;
+export declare const singupSchemaFrontend: z.ZodObject<{
+    email: z.ZodString;
+    userName: z.ZodString;
+    fullName: z.ZodString;
+    password: z.ZodString;
+    ProfilePhoto: z.ZodEffects<z.ZodEffects<z.ZodType<File, z.ZodTypeDef, File>, File, File>, File, File>;
+}, "strip", z.ZodTypeAny, {
+    email: string;
+    userName: string;
+    fullName: string;
+    password: string;
+    ProfilePhoto: File;
+}, {
+    email: string;
+    userName: string;
+    fullName: string;
+    password: string;
+    ProfilePhoto: File;
+}>;
+export type signupTypeFrontend = z.infer<typeof singupSchemaFrontend>;
 export declare const singinSchema: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;

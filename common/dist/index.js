@@ -6,6 +6,17 @@ export const singupSchema = z.object({
     password: z.string().min(8, { message: "password must have at least 8  chars" }),
     profilePhoto: z.string().url().optional(),
 });
+//signup schema for frontend
+export const singupSchemaFrontend = z.object({
+    email: z.string().email(),
+    userName: z.string().max(20, { message: "username must be under 20 char" }),
+    fullName: z.string(),
+    password: z.string().min(8, { message: "password must have at least 8  chars" }),
+    ProfilePhoto: z
+        .instanceof(File)
+        .refine((file) => ["image/jpeg", "image/png"].includes(file.type), { message: "Only .jpg and .png file types are allowed" })
+        .refine((file) => file.size <= 2 * 1024 * 1024, { message: "File size must be less than or equal to 2MB" }),
+});
 export const singinSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8)
