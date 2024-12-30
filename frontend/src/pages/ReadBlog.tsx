@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilStateLoadable, useSetRecoilState } from "recoil";
+import { useRecoilState,  useSetRecoilState } from "recoil";
 import { isLogedinAtom } from "../store/atom/isloginatom";
 import { useNavigate, useParams } from "react-router-dom";
 import getBlogInfoService from "../services/getBlogInfo";
@@ -22,6 +22,7 @@ import { allBlogAtom } from "../store/atom/allBlogAtom";
 import toast from 'react-hot-toast';
 import getAllBlogService from "../services/getAllBlogService";
 import getMyBlogService from "../services/getMyblogService";
+import getSavedBlogService from "../services/getSavedBlogService";
 import { myBlogAtom } from "../store/atom/myBlogAtom";
 import { savedBlogAtom } from "../store/atom/savedBlogAtom";
 
@@ -88,6 +89,12 @@ async function delay() {
         .then((res)=>{
           setMyBlogs(res)
         })
+
+        //update saved blog if make like
+        getSavedBlogService()
+        .then((res)=>{
+          setSavedBlogs(res);
+        })
         
         setLikeCount(likeCount+1);
       }else{
@@ -101,8 +108,13 @@ async function delay() {
         .then((res)=>{
           setMyBlogs(res)
         })
+        //update saved blog if make like
+        getSavedBlogService()
+        .then((res)=>{
+          setSavedBlogs(res);
+        })
         setLikeCount(likeCount-1);
-
+        
       }
     }
     setShowLoader(false);
@@ -114,7 +126,14 @@ async function delay() {
     setShowLoader(true);
     const res = await savedBlogService(parseInt(params.blogid!));
     if(res?.success === true){
+      //update saved blog if save th bl
+      getSavedBlogService()
+      .then((res)=>{
+        setSavedBlogs(res);
+      })
+      
       toast.success(res?.msg);
+      
       await delay();
       // navigate to the save blog section ater delay
       navigate("/saved-blog")
@@ -122,12 +141,12 @@ async function delay() {
     else{
       toast.error((res?.msg)? res.msg: "can't save the blog");
       setShowLoader(false);
-
+      
       
       
     }
     btn.disabled=false;
-
+    
   }
   
   //unsave the blog service
@@ -135,9 +154,14 @@ async function delay() {
     setShowLoader(true);
     const res = await unsaveBlogService(parseInt(params.blogid!));
     if(res?.success === true){
+      //update saved blog if save th bl
+      getSavedBlogService()
+      .then((res)=>{
+        setSavedBlogs(res);
+      })
       toast.success(res?.msg);
       await delay();
-      navigate("/")
+      navigate("/saved-blog")
     }
     else{
       toast.error((res?.msg)? res.msg: "Blog unsave fail");

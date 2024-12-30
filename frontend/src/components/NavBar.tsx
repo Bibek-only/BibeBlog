@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { isLogedinAtom } from "../store/atom/isloginatom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValueLoadable, useSetRecoilState } from "recoil";
 
 import { logedinUserInfoAtom } from "../store/atom/userInfoAtom";
 
@@ -115,14 +115,70 @@ async  function logout(e: React.MouseEvent<HTMLButtonElement>){
         </div>
         <div className="order-2 md:order-3 md:w-60  flex items-center justify-center">
           {
-            (isLogedin)?<div className="profile  flex items-center"><div className="px-2 text-xl text-gray-500 font-bold cursor-pointer hover:text-indigo-600 duration-200 hover:underline">{(userinfo.contents === null)?"":userinfo.contents.fullName}</div><div className="img border cursor-pointer h-12 w-12 rounded-full bg-[#16181c] text-indigo-500 hover:text-indigo-600 flex items-center justify-center text-2xl font-bold">{ (userinfo.contents == null)?"":<img src={userinfo.contents. profilePhoto} className="h-12 w-12 object-center object-cover rounded-full" alt=""/>}</div></div>:<NavLink to="/signin" className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2 font-bold">
+            (isLogedin)?<div className="profile  flex items-center"><div className="px-2 text-xl text-gray-500 font-bold cursor-pointer hover:text-indigo-600 duration-200 hover:underline">{(userinfo.state === "hasValue" && userinfo.contents !=null && userinfo.contents.fullName.length !=0 )?<button 
+            //user card show logic
+            onClick={()=>{
+              document.querySelector("#userCardId")?.classList.toggle("hidden")
+            }}
+            >{userinfo.contents.fullName}</button>:""}</div><div className="img border cursor-pointer h-12 w-12 rounded-full bg-[#16181c] text-indigo-500 hover:text-indigo-600 flex items-center justify-center text-2xl font-bold">{ (userinfo.contents == null)?"":<img src={userinfo.contents. profilePhoto} className="h-12 w-12 object-center object-cover rounded-full" alt=""/>}</div></div>:<NavLink to="/signin" className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2 font-bold">
             Log in
           </NavLink>
           }
         </div>
       </div>
+      {/* show the usercard */}
+      <UserCard></UserCard>
     </nav>
   );
 };
 
 export default NavBar;
+
+function UserCard(){
+  const userinfo =  useRecoilValueLoadable(logedinUserInfoAtom);
+  return(
+  <div id="userCardId" className="hidden bg-[#1d1d1c] border border-[#6B7280] w-full max-w-sm  rounded-lg shadow  absolute right-5">
+    <div className="flex justify-end px-4 pt-4 relative">
+        <button  id="dropdownButton" data-dropdown-toggle="dropdown" className="inline-block  focus:ring-4 focus:outline-none  rounded-lg text-sm p-1.5" type="button" onClick={()=>{
+          const ele = document.querySelector("#dropdown")?.classList;
+          ele?.toggle("hidden")
+        }}>
+            <span className="sr-only">Open dropdown</span>
+            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+            </svg>
+        </button>
+        {/* <!-- Dropdown menu --> */}
+        <div id="dropdown" className="z-10 hidden text-base list-none  rounded-lg shadow   absolute top-16">
+            <ul className="py-2" aria-labelledby="dropdownButton">
+            <li>
+                <a  className="block px-4 py-2 text-sm ">Edit</a>
+            </li>
+            <li>
+                
+            </li>
+            <li>
+                <a  className="block px-4 py-2 text-sm ">Delete</a>
+            </li>
+            </ul>
+        </div>
+    </div>
+    <div className="flex flex-col items-center pb-10">
+        <img className="w-24 h-24 mb-3 rounded-full shadow-lg border border-[#6B7280]" src={userinfo.contents.profilePhoto} alt="Bonnie image"/>
+        <h5 className="mb-1 text-xl font-medium ">{userinfo.contents.fullName}</h5>
+        <span className="text-sm ">{userinfo.contents.userName}</span>
+        <div className="flex mt-4 md:mt-6">
+            <p  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center ">Followers: {userinfo.contents._count.followers}</p>
+            <button  className="py-2 px-4 outline-none  ms-2 text-sm font-medium rounded-lg bg-black  focus:z-10  f"
+             onClick={()=>{
+              document.querySelector("#userCardId")?.classList.toggle("hidden")
+            }}
+            >Close</button>
+        </div>
+    </div>
+</div>
+
+  )
+}
+
+//(userinfo.contents === null)?"":userinfo.contents.fullName
