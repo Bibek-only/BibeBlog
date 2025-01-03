@@ -45,30 +45,29 @@ const AllBlog = () => {
   const [logedinUserInfo, setLogedinUserInfo] =
     useRecoilStateLoadable(logedinUserInfoAtom);
 
-    //set the input
-    const setSearchUser= useSetRecoilState(searcUserhAtom);
-    const setSearchBlog = useSetRecoilState(searcBloghAtom);
+  //set the input
+  const setSearchUser = useSetRecoilState(searcUserhAtom);
+  const setSearchBlog = useSetRecoilState(searcBloghAtom);
 
-    const [inputUser,setInputUser] = useState("");
-    const [inputBlog,setInputBlog] = useState("");
+  const [inputUser, setInputUser] = useState("");
+  const [inputBlog, setInputBlog] = useState("");
 
-    //useEffect to setthe user
-    useEffect(()=>{
-      const tid = setTimeout(()=>{
-        setSearchUser(inputUser);
-      },500)
+  //useEffect to setthe user
+  useEffect(() => {
+    const tid = setTimeout(() => {
+      setSearchUser(inputUser);
+    }, 500);
 
-      return ()=> clearTimeout(tid);
-    },[inputUser])
+    return () => clearTimeout(tid);
+  }, [inputUser]);
 
+  useEffect(() => {
+    const tid = setTimeout(() => {
+      setSearchBlog(inputBlog);
+    }, 500);
 
-    useEffect(()=>{
-      const tid = setTimeout(()=>{
-        setSearchBlog(inputBlog);
-      },500)
-
-      return ()=> clearTimeout(tid);
-    },[inputBlog])
+    return () => clearTimeout(tid);
+  }, [inputBlog]);
 
   //set the user is loged in or not
   useEffect(() => {
@@ -101,33 +100,39 @@ const AllBlog = () => {
         {showLoader && <Loader></Loader>}
         <section className="w-full md:px-20 md:w-11/12 m-auto">
           <div className="  grid grid-cols-1 lg:grid-cols-3  min-h-screen">
-            <div className="   lg:col-span-2 border-l border-l-[#6B7280] md:px-4">
+            <div className="   lg:col-span-2 md:border-l md:border-l-[#6B7280] md:px-4">
               {/* show the blog card here */}
               <h1 className="px-4 text-xl font-bold text-indigo-500 underline">
                 Blog's
               </h1>
               <div className="ipouter  flex items-center">
-              <IoSearch className="text-lg"/>
-              <input className="hidden md:flex bg-transparent outline-none py-2 px-4" type="text" placeholder="Search blog"
-              onChange={(e)=>{
-                setInputBlog(e.target.value);
-              }}
-              />
+                <IoSearch className="text-lg" />
+                <input
+                  className="flex bg-transparent outline-none py-2 px-4"
+                  type="text"
+                  placeholder="Search blog"
+                  onChange={(e) => {
+                    setInputBlog(e.target.value);
+                  }}
+                />
               </div>
               <BlogCards></BlogCards>
             </div>
-            <div className="md:py- border-x border-x-[#6B7280] md:px-2">
+            <div className=" md:border-x md:border-x-[#6B7280] md:px-2">
               {/* display all the user present in the server */}
               <h1 className="px-4 text-xl font-bold text-indigo-500 underline">
                 Creator's
               </h1>
-              <div className="ipouter  flex items-center">
-              <IoSearch className="text-lg"/>
-              <input className="hidden md:flex bg-transparent outline-none py-2 px-4" type="text" placeholder="Search"
-              onChange={(e)=>{
-                setInputUser(e.target.value);
-              }}
-              />
+              <div className="hidden ipouter  md:flex items-center">
+                <IoSearch className="text-lg" />
+                <input
+                  className="hidden md:flex bg-transparent outline-none py-2 px-4"
+                  type="text"
+                  placeholder="Search"
+                  onChange={(e) => {
+                    setInputUser(e.target.value);
+                  }}
+                />
               </div>
               <UserCards></UserCards>
             </div>
@@ -150,8 +155,11 @@ function UserCards() {
     return (
       <div>
         {allUser.contents.map((e: any) => {
-          if(e.fullName.toLowerCase().startsWith(searchUser) || e.userName.toLowerCase().startsWith(searchUser) || e.email.toLowerCase().startsWith(searchUser)){
-
+          if (
+            e.fullName.toLowerCase().startsWith(searchUser) ||
+            e.userName.toLowerCase().startsWith(searchUser) ||
+            e.email.toLowerCase().startsWith(searchUser)
+          ) {
             return (
               <div className=" user-card flex items-center space-x-4 p-3   rounded-lg transition-all duration-500 hover:border-[#6B7280] border border-transparent mb-2">
                 <img
@@ -171,8 +179,8 @@ function UserCards() {
                 </div>
               </div>
             );
-          }else{
-            return <></>
+          } else {
+            return <></>;
           }
         })}
       </div>
@@ -183,7 +191,6 @@ function UserCards() {
 }
 
 function BlogCards() {
-
   const searchBlog = useRecoilValue(searcBloghAtom);
 
   const allBlogs = useRecoilValueLoadable(allBlogAtom);
@@ -192,9 +199,10 @@ function BlogCards() {
     return (
       <div>
         {allBlogs.contents.map((blg: any) => {
-          
-          if(blg.title.toLowerCase().startsWith(searchBlog) || blg.content.toLowerCase().startsWith(searchBlog)){
-
+          if (
+            blg.title.toLowerCase().startsWith(searchBlog) ||
+            blg.content.toLowerCase().startsWith(searchBlog)
+          ) {
             return (
               <div
                 className="blog border-b border-b-[#6B7280] h-72 flex flex-col-reverse justify-around items-center  md:flex-row mb-4"
@@ -212,7 +220,7 @@ function BlogCards() {
                       <AiFillLike />
                       {blg._count.likes}
                     </p>
-  
+
                     <ReadBlog prop={{ id: blg.id }} />
                   </div>
                 </div>
@@ -225,12 +233,9 @@ function BlogCards() {
                 </div>
               </div>
             );
-          }else{
-            return <></>
+          } else {
+            return <></>;
           }
-          
-          
-          
         })}
       </div>
     );

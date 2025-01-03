@@ -12,6 +12,8 @@ const userRouter = new Hono<{
       JWT_SECREAT:string,
       CLOUD_NAME:string,
       CLOUD_URL:string,
+      API_KEY:string,
+      API_SECREATE:string
     }
   }>();
 

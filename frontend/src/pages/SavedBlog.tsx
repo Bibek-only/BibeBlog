@@ -64,7 +64,7 @@ const SavedBlog = () => {
     return (
       <>
         {loader && <Loader></Loader>}
-        <section className="w-full min-h-screen md:w-9/12 mx-auto border-x border-x-[#6B7280] md:px-8">
+        <section className="w-full min-h-screen md:w-9/12 mx-auto md:border-x md:border-x-[#6B7280] md:px-8">
           <h1 className="px-4 text-xl font-bold text-indigo-500 underline">
             Saved blog's
           </h1>

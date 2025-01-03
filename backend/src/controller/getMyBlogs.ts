@@ -24,7 +24,7 @@ async function getMyBlogs(c: any) {
 
     c.status(200);
     return c.json(
-      new apiresponse(true, 200, "Sucessfully get all the Blogs", allBlogs)
+      new apiresponse(true, 200, "Sucessfully get my the Blogs", allBlogs)
     );
   } catch (error) {
     c.status(400);

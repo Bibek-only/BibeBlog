@@ -3,6 +3,7 @@ import { prettyJSON } from "hono/pretty-json";
 import userRouter from "./router/userRouter";
 import blogRouter from "./router/blogRouter";
 import { cors } from "hono/cors";
+
 const app = new Hono<{
   Bindings: {
     DATABASE_URL: string;
