@@ -212,8 +212,11 @@ function BlogCards() {
                 <div className="content w-96 md:w-2/3  flex flex-col  items-start pl-2 md:pl-0">
                   <div className="title text-xl">{blg.title}</div>
                   <p>Author : {blg.author?.fullName}</p>
-                  <p className="hidden  h-24 overflow-hidden w-full text-sm md:flex items-center">
-                    {blg.content}
+                  <p className="hidden  md:py-2 h-24  w-full text-sm md:flex items-center">
+                  {
+                    (blg.content.length > 40)?`${blg.content.slice(0,300)} ......`:blg.content
+                  }
+                  
                   </p>
                   <div className="btns flex items-center gap-4">
                     <p className="flex items-center gap-2 ">

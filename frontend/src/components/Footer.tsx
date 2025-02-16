@@ -1,4 +1,5 @@
-import { FaTwitter, FaFacebook, FaInstagram, FaGithub } from "react-icons/fa";
+import { FaTwitter, FaLinkedin, FaInstagram, FaGithub } from "react-icons/fa";
+
 
 const Footer = () => {
   return (
@@ -34,22 +35,31 @@ const Footer = () => {
       <div className="lower flex flex-wrap justify-evenly items-center lg:w-11/12 buttom m-auto">
         <ul className="flex max-lg:gap-2 max-lg:flex-wrap items-center gap-8 font-thin text-white">
           <li>
+            <a href="https://x.com/BibekSamal2124" target="_blank">
             <FaTwitter />
+            </a>
           </li>
           <li>
-            <FaFacebook />
+            <a href="https://www.linkedin.com/in/bibek-samal-267b79256/" target="_blank">
+
+            <FaLinkedin />
+            </a>
           </li>
           <li>
+            <a href="https://www.instagram.com/bibek___samal/" target="_blank">
             <FaInstagram /> 
+            </a>
           </li>
           <li>
+            <a href="https://github.com/Bibek-only" target="_blank">
             <FaGithub /> 
+            </a>
           </li>
           <li>Privacy Policy</li>
           <li>Terms & Conditions</li>
           <i>Support</i>
         </ul>
-        <p className="font-thin text-gray-300">© Copyright 2021, All Rights Reserved by Postcraft</p>
+        <p className="font-thin text-gray-300">`© Copyright {new Date().getFullYear()}, All Rights Reserved by BibeBlog`</p>
       </div>
     </section>
   );

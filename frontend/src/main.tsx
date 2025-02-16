@@ -20,8 +20,8 @@ const UpdateBlog = lazy(() => import("./pages/UpdateBlog.tsx"));
 const MyBlog = lazy(() => import("./pages/MyBlog.tsx"));
 const AllBlog = lazy(() => import("./pages/AllBlog.tsx"));
 const ReadBlog = lazy(() => import("./pages/ReadBlog.tsx"));
-const SavedBlog = lazy(()=> import("./pages/SavedBlog.tsx"))
-const Welcome = lazy(()=> import("./pages/Welcome.tsx"))
+const SavedBlog = lazy(()=> import("./pages/SavedBlog.tsx"));
+const Welcome = lazy(()=> import("./pages/Welcome.tsx"));
 
 import SignupSkeliton from "./skelitons/SignupSkeliton.tsx";
 import AllblogSkeliton from "./skelitons/AllblogSkeliton.tsx";
@@ -137,6 +137,11 @@ const router = createBrowserRouter(
           </Suspense>
         }
       ></Route>
+      <Route path="*" element={
+          <Suspense fallback={<Loader></Loader>}>
+            <Welcome></Welcome>
+          </Suspense>
+        }></Route>
     </Route>
   )
 );

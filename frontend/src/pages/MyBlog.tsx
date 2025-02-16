@@ -29,6 +29,7 @@ import { loadingAtom } from "../store/atom/loadingAtom";
 import { enableClick, disableClick } from "../services/clickDesEnb";
 import getMyBlogService from "../services/getMyblogService";
 import toast from "react-hot-toast";
+import { blogAtom } from "../store/atom/blogAtom";
 
 
 const MyBlog = () => {
@@ -103,7 +104,9 @@ function BlogCards() {
               <div className="content w-96 md:w-2/3  flex flex-col gap-2 items-start pl-2 md:pl-0">
                 <div className="title text-xl">{blg.title}</div>
                 <p className="md:h-24 h-8 overflow-hidden w-full text-sm flex items-center">
-                  {blg.content}
+                  {
+                    (blg.content.length > 40)?`${blg.content.slice(0,500)} ......`:blg.content
+                  }
                 </p>
                 <div className="btns flex items-center gap-4">
                   <p className="flex items-center gap-2 ">

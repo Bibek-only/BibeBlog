@@ -113,13 +113,15 @@ async  function logout(e: React.MouseEvent<HTMLButtonElement>){
           }
           
         </div>
-        <div className="order-2 md:order-3 md:w-60  flex items-center justify-center">
+        <div className="order-2 md:order-3 md:w-60  flex items-center justify-center "
+        onClick={()=>{
+          document.querySelector("#userCardId")?.classList.toggle("hidden")
+        }}
+        >
           {
             (isLogedin)?<div className="profile  flex items-center"><div className="px-2 text-xl text-gray-500 font-bold cursor-pointer hover:text-indigo-600 duration-200 hover:underline">{(userinfo.state === "hasValue" && userinfo.contents !=null && userinfo.contents.fullName.length !=0 )?<button 
             //user card show logic
-            onClick={()=>{
-              document.querySelector("#userCardId")?.classList.toggle("hidden")
-            }}
+            
             >{userinfo.contents.fullName}</button>:""}</div><div className="img border cursor-pointer h-12 w-12 rounded-full bg-[#16181c] text-indigo-500 hover:text-indigo-600 flex items-center justify-center text-2xl font-bold">{ (userinfo.contents == null)?"":<img src={userinfo.contents. profilePhoto} className="h-12 w-12 object-center object-cover rounded-full" alt=""/>}</div></div>:<NavLink to="/signin" className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2 font-bold">
             Log in
           </NavLink>
@@ -136,6 +138,7 @@ export default NavBar;
 
 function UserCard(){
   const userinfo =  useRecoilValueLoadable(logedinUserInfoAtom);
+  const navigate = useNavigate();
   return(
   <div id="userCardId" className="hidden bg-[#1d1d1c] border border-[#6B7280] w-full max-w-sm  rounded-lg shadow  absolute right-2 md:right-5">
     <div className="flex justify-end px-4 pt-4 relative">
@@ -158,7 +161,11 @@ function UserCard(){
                 
             </li>
             <li>
-                <a  className="block px-4 py-2 text-sm ">Delete</a>
+                <button 
+                onClick={()=>{
+                  navigate("/delete-acc")
+                }}
+                className="block px-4 py-2 text-sm ">Delete</button>
             </li>
             </ul>
         </div>
