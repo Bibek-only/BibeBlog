@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function uploadToCloudinaryService(img: any){
+export default async function uploadToCloudinaryService(){
     const data = new FormData();
     data.append("file","image");
     data.append("upload_preset","bibeblog");

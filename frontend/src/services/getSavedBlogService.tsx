@@ -1,4 +1,5 @@
 import axios from "axios";
+import { api } from "../api";
 
 export default async function getSavedBlogService(){
 
@@ -8,7 +9,7 @@ export default async function getSavedBlogService(){
     
     const token = localStorage.getItem('token')?.split(" ")[1];
    try {
-    const savedBlogs = await axios.get("/api/v1/blog/getsavedblog",{
+    const savedBlogs = await axios.get(`${api}/api/v1/blog/getsavedblog`,{
         headers:{
             Authorization: token
         }

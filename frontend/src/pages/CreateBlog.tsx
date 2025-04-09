@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { isLogedinAtom } from "../store/atom/isloginatom";
 import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";

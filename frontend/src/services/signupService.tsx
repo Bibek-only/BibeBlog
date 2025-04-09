@@ -1,5 +1,6 @@
 import {signupTypeFrontend } from "@bibek-samal/bibeblog-common"
 import axios from "axios";
+import { api } from "../api";
 export async function signupService(obj:signupTypeFrontend){
 
     const {email,userName,fullName,password} = obj;
@@ -14,7 +15,7 @@ export async function signupService(obj:signupTypeFrontend){
     
 
    try {
-    const signupRes = await axios.post("/api/v1/user/signup",formData);
+    const signupRes = await axios.post(`${api}/api/v1/user/signup`,formData);
     if(signupRes.data.success === true){
         //set the token in localstorage
         localStorage.setItem('token',`bearer ${signupRes.data.data.token}`)

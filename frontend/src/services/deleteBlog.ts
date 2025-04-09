@@ -1,10 +1,11 @@
 import axios from "axios";
+import { api } from "../api";
 
 export async function deleteBlogService(blogId: any){
     const token = localStorage.getItem('token')?.split(" ")[1];
     try {
         
-        const delRes = await axios.delete(`/api/v1/blog/deleteblog?blogId=${blogId}`,{
+        const delRes = await axios.delete(`${api}/api/v1/blog/deleteblog?blogId=${blogId}`,{
                 headers:{
                     Authorization: token,
                 }

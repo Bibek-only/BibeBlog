@@ -18,7 +18,7 @@ import { myBlogAtom } from "../store/atom/myBlogAtom";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const [isLogedin,setIsLogedin] = useRecoilState(isLogedinAtom);
+  const [isLogedin] = useRecoilState(isLogedinAtom);
 
   const [userinfo,setUserinfo] =  useRecoilStateLoadable(logedinUserInfoAtom);
   const setLoading = useSetRecoilState(loadingAtom);
@@ -29,6 +29,7 @@ const setMyBlogs = useSetRecoilState(myBlogAtom);
 
   //logout function
 async  function logout(e: React.MouseEvent<HTMLButtonElement>){
+  console.log(e);
   toast.error("logout the user")
   setLoading(true);
   disableClick(); //disable the click

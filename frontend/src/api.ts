@@ -1,0 +1,1 @@
+export const api = "https://backend.bibekbibek966.workers.dev";

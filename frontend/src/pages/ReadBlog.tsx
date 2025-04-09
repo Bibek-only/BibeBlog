@@ -42,7 +42,7 @@ const setSavedBlogs = useSetRecoilState(savedBlogAtom)
 const navigate = useNavigate();
 
 async function delay() {
-  await new Promise((res, rej) => {
+  await new Promise((res) => {
     setTimeout(() => {
       res("delay resolved");
     }, 500);

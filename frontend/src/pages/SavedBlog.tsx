@@ -23,7 +23,7 @@ import { disableClick, enableClick } from "../services/clickDesEnb";
 
 import { logedinUserInfoAtom } from "../store/atom/userInfoAtom";
 import AllblogSkeliton from "../skelitons/AllblogSkeliton";
-import { blogAtom } from "../store/atom/blogAtom";
+// import { blogAtom } from "../store/atom/blogAtom";
 
 const SavedBlog = () => {
   const setIsLogedin = useSetRecoilState(isLogedinAtom);

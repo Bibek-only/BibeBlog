@@ -10,7 +10,7 @@ import { getUserInfoService } from "../services/getUserInfoService";
 import { deleteBlogService } from "../services/deleteBlog";
 import { FaArrowRight } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
-import { FaRegEdit } from "react-icons/fa";
+// import { FaRegEdit } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
 
 import { myBlogAtom } from "../store/atom/myBlogAtom";
@@ -29,7 +29,7 @@ import { loadingAtom } from "../store/atom/loadingAtom";
 import { enableClick, disableClick } from "../services/clickDesEnb";
 import getMyBlogService from "../services/getMyblogService";
 import toast from "react-hot-toast";
-import { blogAtom } from "../store/atom/blogAtom";
+// import { blogAtom } from "../store/atom/blogAtom";
 
 
 const MyBlog = () => {
@@ -45,9 +45,9 @@ const MyBlog = () => {
     useRecoilStateLoadable(logedinUserInfoAtom);
 
   //delete blog
-  async function deleteBlog(blogId: any) {
-    console.log(blogId);
-  }
+  // async function deleteBlog(blogId: any) {
+  //   console.log(blogId);
+  // }
 
   //set the user is loged in or not
   useEffect(() => {

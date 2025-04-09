@@ -1,11 +1,12 @@
 import axios from "axios";
+import { api } from "../api";
 
 
 export default async function getAllUserService(){
    const token = localStorage.getItem('token')?.split(" ")[1];
    
    try {
-        const allUser = await axios.get("/api/v1/user/getalluser",{
+        const allUser = await axios.get(`${api}/api/v1/user/getalluser`,{
             headers:{
                 Authorization: token,
             }

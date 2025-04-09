@@ -1,10 +1,11 @@
 import axios from "axios";
+import { api } from "../api";
 
 export default async function addLikeService(id: number){
     const token = localStorage.getItem('token')?.split(" ")[1];
     
     try {
-        const likeRes = await axios.post(`/api/v1/blog/likeblog?id=${id}`,{},{
+        const likeRes = await axios.post(`${api}/api/v1/blog/likeblog?id=${id}`,{},{
             headers:{
                 Authorization: token
             }

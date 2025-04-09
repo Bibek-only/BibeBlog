@@ -1,8 +1,8 @@
 import { isLogedinAtom } from "../store/atom/isloginatom";
-import { useEffect, useState } from 'react'
+import { useEffect, } from 'react'
 import {  useNavigate } from 'react-router-dom'
 import Loader from '../skelitons/Loader'
-import { useRecoilState, useRecoilStateLoadable, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilStateLoadable} from "recoil";
 import { enableClick, disableClick } from "../services/clickDesEnb";
 
 import {logedinUserInfoAtom} from "../store/atom/userInfoAtom";
@@ -90,7 +90,7 @@ const Welcome = () => {
                     <p className="mt-4 text-base text-white lg:mt-8 sm:text-xl">Share your thoughts, inspire, and connect globally.</p>
 
                     <button data-aos="fade-up"  className="inline-flex items-center px-6 py-4 mt-8 font-semibold text-white transition-all duration-200 bg-indigo-500 rounded-full lg:mt-16 hover:bg-indigo-600 focus:bg-indigo-600" 
-                    onClick={(e)=>{
+                    onClick={()=>{
                         
                         if(logedin === true){
                             navigate("/home")
