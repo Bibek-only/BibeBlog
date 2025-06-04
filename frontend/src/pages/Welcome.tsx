@@ -109,7 +109,7 @@ const Welcome = () => {
                 </div>
 
                 <div data-aos="fade-left">
-                    <img className="w-full " src="../../public/logo3.png" alt="" />
+                    <img className="w-full " src="/logo3.png" alt="" />
                 </div>
             </div>
         </div>
